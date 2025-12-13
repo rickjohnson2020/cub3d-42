@@ -15,7 +15,7 @@ NAME = cub3D
 SRC_DIR = srcs
 BUILD_DIR = build
 
-SRC_FILES = main.c
+SRC_FILES = main.c init.c render.c
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -O3 -march=native -g
@@ -26,10 +26,11 @@ OBJS = $(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR)/%.o, $(SRCS))
 LIBFT_DIR = ./libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
-MLX_DIR = ./minilibx-linux
+#MLX_DIR = ./minilibx-linux
+MLX_DIR = ./minilibx-opengl
 MLX = $(MLX_DIR)/libmlx.a
-MLX_FLAGS = -lmlx -lXext -lX11 -lm -lz
-#MLX_FLAGS = -lmlx -framework OpenGL -framework AppKit
+#MLX_FLAGS = -lmlx -lXext -lX11 -lm -lz
+MLX_FLAGS = -lmlx -framework OpenGL -framework AppKit
 
 INCLUDES = -I includes -I $(LIBFT_DIR) -I $(MLX_DIR)
 

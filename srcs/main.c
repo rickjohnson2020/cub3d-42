@@ -1,18 +1,13 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: riyano <riyano@student.42london.com>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/30 19:11:25 by riyano            #+#    #+#             */
-/*   Updated: 2025/11/30 19:15:18 by riyano           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../includes/cub3d.h"
 
-int	main(int ac, char **av)
+int	main(void)
 {
+	t_game		game;
+
+	init_game(&game);
+
+	render_frame(&game);
+	mlx_put_image_to_window(game.mlx, game.win, game.frame.img, 0, 0);
+	mlx_loop(game.mlx);
 	return (0);
 }
