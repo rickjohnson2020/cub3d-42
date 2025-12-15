@@ -14,6 +14,33 @@
 # define RED 0x00FF0000
 # define DARK_RED 0x00800000
 
+// for linux
+//# define MOUSE_DOWN 4
+//# define MOUSE_UP 5
+//# define WINDOW_CLOSE 17
+//# define KEY_ESC 65307
+//# define KEY_LEFT 65361
+//# define KEY_UP 65362
+//# define KEY_RIGHT 65363
+//# define KEY_DOWN 65364
+//# define KEY_A 97
+//# define KEY_D 100
+//# define KEY_W 119
+//# define KEY_S 115
+
+// for mac
+# define MOUSE_DOWN 4
+# define MOUSE_UP 5
+# define WINDOW_CLOSE 17
+# define KEY_ESC 53
+# define KEY_LEFT 123
+# define KEY_UP 126
+# define KEY_RIGHT 124
+# define KEY_DOWN 125
+# define KEY_A 0
+# define KEY_D 2
+# define KEY_W 13
+# define KEY_S 1
 
 typedef struct	s_vec2d
 {
@@ -113,5 +140,6 @@ typedef struct	s_game
 
 void	render_frame(t_game *game);
 void	init_game(t_game *game);
+int		handle_key_press(int keycode, t_game *game);
 
 #endif

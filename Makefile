@@ -15,7 +15,7 @@ NAME = cub3D
 SRC_DIR = srcs
 BUILD_DIR = build
 
-SRC_FILES = main.c init.c render.c
+SRC_FILES = main.c init.c render.c player.c
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -O3 -march=native -g

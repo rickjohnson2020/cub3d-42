@@ -8,6 +8,8 @@ void	init_player(t_player *p)
 	p->dir.y = -0.7;
 	p->plane.x = 0.46;
 	p->plane.y = -0.46;
+	p->move_speed = 0.1;
+	p->rot_speed = 0.1;
 }
 
 void	init_mlx(t_game *game)
@@ -27,7 +29,7 @@ static char	**dup_map(void)
 		"1000000001",
 		"1000000001",
 		"1000000001",
-		"1000000001",
+		"1000010001",
 		"1000000001",
 		"1000000001",
 		"1000000001",
