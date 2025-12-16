@@ -11,6 +11,9 @@
 # define WIN_WIDTH 1024
 # define WIN_HEIGHT 768
 
+# define MOVE_SPEED 0.1
+# define ROT_SPEED 0.1
+
 # define RED 0x00FF0000
 # define DARK_RED 0x00800000
 
