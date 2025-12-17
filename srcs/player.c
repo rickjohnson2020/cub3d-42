@@ -2,16 +2,23 @@
 
 void	update_player_pos(t_game *game, t_player *p, int key);
 void	update_player_rot(t_player *p, int key);
-// pass this function to mlx_loop_hook
-//int		game_loop(t_game *game);
-int		handle_key_press(int keycode, t_game *game);
-int		handle_key_release(int keycode, t_game *game);
+int		game_loop(t_game *game);
 void	check_wall_and_update(t_game *game, t_player *p, double x, double y);
 
-int	handle_key_press(int keycode, t_game *game)
+int	game_loop(t_game *game)
 {
-	update_player_pos(game, &game->player, keycode);
-	update_player_rot(&game->player, keycode);
+	if (game->input.w == 1)
+		update_player_pos(game, &game->player, KEY_W);
+	if (game->input.s == 1)
+		update_player_pos(game, &game->player, KEY_S);
+	if (game->input.d == 1)
+		update_player_pos(game, &game->player, KEY_D);
+	if (game->input.a == 1)
+		update_player_pos(game, &game->player, KEY_A);
+	if (game->input.right == 1)
+		update_player_rot(&game->player, KEY_RIGHT);
+	if (game->input.left == 1)
+		update_player_rot(&game->player, KEY_LEFT);
 	render_frame(game);
 	mlx_put_image_to_window(game->mlx, game->win, game->frame.img, 0, 0);
 	return (0);

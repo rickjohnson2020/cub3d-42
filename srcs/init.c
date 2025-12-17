@@ -10,6 +10,16 @@ void	init_player(t_player *p)
 	p->plane.y = -0.46;
 }
 
+void	init_input(t_input *i)
+{
+	i->w = 0;
+	i->s = 0;
+	i->d = 0;
+	i->a = 0;
+	i->right = 0;
+	i->left = 0;
+}
+
 void	init_mlx(t_game *game)
 {
 	game->mlx = mlx_init();
@@ -66,4 +76,5 @@ void	init_game(t_game *game)
 	game->frame.size.y = WIN_HEIGHT;
 
 	init_player(&game->player);
+	init_input(&game->input);
 }

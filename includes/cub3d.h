@@ -11,8 +11,8 @@
 # define WIN_WIDTH 1024
 # define WIN_HEIGHT 768
 
-# define MOVE_SPEED 0.1
-# define ROT_SPEED 0.1
+# define MOVE_SPEED 0.05
+# define ROT_SPEED 0.01
 
 # define RED 0x00FF0000
 # define DARK_RED 0x00800000
@@ -44,6 +44,8 @@
 # define KEY_D 2
 # define KEY_W 13
 # define KEY_S 1
+# define KEY_PRESS 02
+# define KEY_RELEASE 03
 
 typedef struct	s_vec2d
 {
@@ -125,6 +127,16 @@ typedef struct	s_ray
 	t_wall_side	hit_side;
 }	t_ray;
 
+typedef struct	s_input
+{
+	int	w;
+	int	s;
+	int	d;
+	int	a;
+	int	right;
+	int	left;
+}	t_input;
+
 typedef struct	s_game
 {
 	void		*mlx;
@@ -132,6 +144,7 @@ typedef struct	s_game
 	t_map		*map;
 	t_image		frame;
 	t_player	player;
+	t_input		input;
 }	t_game;
 
 //typedef struct	s_wall_line
@@ -144,5 +157,7 @@ typedef struct	s_game
 void	render_frame(t_game *game);
 void	init_game(t_game *game);
 int		handle_key_press(int keycode, t_game *game);
+int		handle_key_release(int keycode, t_game *game);
+int		game_loop(t_game *game);
 
 #endif
