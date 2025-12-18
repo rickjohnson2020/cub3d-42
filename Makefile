@@ -1,63 +1,84 @@
 # **************************************************************************** #
 #                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: riyano <riyano@student.42london.com>       +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/11/30 18:51:08 by riyano            #+#    #+#              #
-#    Updated: 2025/11/30 18:51:15 by riyano           ###   ########.fr        #
+#                                                          :::      ::::::::   #
+#   Makefile                                             :+:      :+:    :+:   #
+#                                                      +:+ +:+         +:+     #
+#   By: takaito <takaito@student.42london.com>       +#+  +:+       +#+        #
+#                                                  +#+#+#+#+#+   +#+           #
+#   Created: 2025/11/30 13:32:36 by takaito             #+#    #+#             #
+#   Updated: 2025/11/30 13:32:36 by takaito            ###   ########.fr       #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = cub3D
+NAME = cub3d
 
-SRC_DIR = srcs
-BUILD_DIR = build
+# Compiler and flags
+CC = gcc
+CFLAGS = -Wall -Wextra -Werror -g
+AR = AR
+ARFLAGS = rcs
+DEBUGFLAGS = -DDEBUG=1 
 
-SRC_FILES = main.c
+# Path and library
+DIR = $(shell pwd)
+LIB_DIR = $(DIR)/lib/
+LIBFT_DIR = $(LIB_DIR)/libft/
+LIBFT = $(LIBFT_DIR)libft.a
+MLX_DIR = $(LIB_DIR)/mlx/ # it could be changed 
+LIBFLAGS = -L$(LIBFT_DIR) -lft
+OBJ_DIR = $(DIR)/objs/
+SRC_DIR = $(DIR)/srcs/
+HEADER_DIR = $(DIR)/include/
+HEADER = $(HEADER_DIR)cub3d.h
+STUB_SRC = #$(SRC_DIR)debug_stub.c
+DEBUG_SRC = #$(SRC_DIR)debug_utils.c
+SRC = \
+	$(SRC_DIR)main.c \
+	$(SRC_DIR)validate_argv.c \
+	$(SRC_DIR)file_utils.c \
+	$(SRC_DIR)put_error.c \
+	$(SRC_DIR)init_game.c \
+	$(SRC_DIR)init_map.c \
+	$(SRC_DIR)free_game.c \
+	$(SRC_DIR)free_map.c \
+	$(SRC_DIR)parse_wall.c \
+	$(SRC_DIR)parse_floor_and_ceiling.c \
+	$(SRC_DIR)parse_map.c \
 
-CC = cc
-CFLAGS = -Wall -Wextra -Werror -O3 -march=native -g
+OBJ = \
+	$(SRC:$(SRC_DIR)%.c=$(OBJ_DIR)%.o) \
+	$(STUB_SRC:$(SRC_DIR)%.c=$(OBJ_DIR)%.o)
 
-SRCS = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
-OBJS = $(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR)/%.o, $(SRCS))
-
-LIBFT_DIR = ./libft
-LIBFT = $(LIBFT_DIR)/libft.a
-
-MLX_DIR = ./minilibx-linux
-MLX = $(MLX_DIR)/libmlx.a
-MLX_FLAGS = -lmlx -lXext -lX11 -lm -lz
-#MLX_FLAGS = -lmlx -framework OpenGL -framework AppKit
-
-INCLUDES = -I includes -I $(LIBFT_DIR) -I $(MLX_DIR)
-
-RM = rm -f
+OBJ_DEBUG = \
+	$(SRC:$(SRC_DIR)%.c=$(OBJ_DIR)%.o) \
+	$(DEBUG_SRC:$(SRC_DIR)%.c=$(OBJ_DIR)%.o)
 
 all: $(NAME)
 
-$(NAME): $(OBJS) $(LIBFT) $(MLX)
-	$(CC) $(CFLAGS) $(OBJS) -o $@ -L$(LIBFT_DIR) -lft -L$(MLX_DIR) $(MLX_FLAGS)
+print:
+	@echo $(OBJ)
+	@echo "\n"
+	@echo $(OBJ_DIR)
 
 $(LIBFT):
 	@$(MAKE) -C $(LIBFT_DIR)
 
-$(MLX):
-	@$(MAKE) -C $(MLX_DIR)
+$(NAME): $(OBJ) $(LIBFT)
+	$(CC) $(CFLAGS) $(OBJ) $(LIBFLAGS) -o $@
 
-$(BUILD_DIR)/%.o: $(SRC_DIR)/%.c includes/cub3d.h
+$(OBJ_DIR)%.o: $(SRC_DIR)%.c $(HEADER)
 	@mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+	@$(CC) $(CFLAGS) -I$(HEADER_DIR) -c $< -o $@
+
+debug: $(OBJ_DEBUG)
+	$(CC) $(CFLAGS) $(OBJ_DEBUG) -o $(NAME)
 
 clean:
-	$(RM) -r $(BUILD_DIR)
-	@$(MAKE) -C $(LIBFT_DIR) clean
-	@$(MAKE) -C $(MLX_DIR) clean
+	rm -rf $(OBJ_DIR)
 
 fclean: clean
-	$(RM) $(NAME) $(LIBFT) $(MLX)
+	rm -f $(NAME)
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re debug print
