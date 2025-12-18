@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/cub3d.h"
+#include "../includes/cub3d.h"
 
 static bool	are_textures_set(t_map *map);
 

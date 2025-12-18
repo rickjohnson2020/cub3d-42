@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/cub3d.h"
+#include "../includes/cub3d.h"
 
 static bool	is_valid_char(char c, bool *has_start_read);
 static bool	is_valid_map(char **map);

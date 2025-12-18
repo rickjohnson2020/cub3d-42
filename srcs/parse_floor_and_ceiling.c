@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/cub3d.h"
+#include "../includes/cub3d.h"
 
 static bool	are_colours_set(t_map *map);
 static char	*convert_dec_to_hex(char *str);
