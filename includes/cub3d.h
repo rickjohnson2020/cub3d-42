@@ -7,6 +7,7 @@
 # include <unistd.h>
 # include <string.h>
 # include <math.h>
+# include <stdio.h>
 
 # define WIN_WIDTH 1024
 # define WIN_HEIGHT 768
@@ -147,17 +148,23 @@ typedef struct	s_game
 	t_input		input;
 }	t_game;
 
-//typedef struct	s_wall_line
-//{
-//	int	height;
-//	int	draw_start;
-//	int	draw_end;
-//}	t_wall_line;
+typedef struct	s_wall_line
+{
+	int		height;
+	int		draw_start;
+	int		draw_end;
+	double	tex_x;
+	double	tex_step;
+	double	tex_pos;
+}	t_wall_line;
 
 void	render_frame(t_game *game);
 void	init_game(t_game *game);
 int		handle_key_press(int keycode, t_game *game);
 int		handle_key_release(int keycode, t_game *game);
 int		game_loop(t_game *game);
+void	load_textures(t_game *game);
+t_image	*select_wall_texture(t_game *game, t_ray *ray);
+int		calculate_tex_x(t_image *tex, t_ray *ray, t_player *p);
 
 #endif

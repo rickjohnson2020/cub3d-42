@@ -7,7 +7,7 @@ void	draw_background(t_game *game);
 void	render_walls(t_game *game);
 void	init_ray(t_ray *ray, t_game *game, int x);
 void	perform_dda(t_ray *ray, t_map *map);
-void	draw_wall_column(t_game *game, int x, t_ray *ray);
+void	draw_wall_column(t_game *game, int x, t_ray *ray, t_wall_line *line);
 
 void	render_frame(t_game *game)
 {
@@ -34,6 +34,14 @@ void	set_pixel(t_image *img, int x, int y, int colour)
 		return ;
 	dst = img->addr + (y * img->line_len + x * (img->bits_per_pixel / 8));
 	*(unsigned int *)dst = colour;
+}
+
+unsigned int	get_pixel(t_image *img, int x, int y)
+{
+	char	*addr;
+
+	addr = img->addr + (y * img->line_len + x * (img->bits_per_pixel / 8));
+	return (*(unsigned int *)addr);
 }
 
 void	draw_background(t_game *game)
@@ -63,15 +71,16 @@ void	draw_background(t_game *game)
 
 void	render_walls(t_game *game)
 {
-	int		x;
-	t_ray	ray;
+	int			x;
+	t_ray		ray;
+	t_wall_line	line;
 
 	x = 0;
 	while (x < WIN_WIDTH)
 	{
 		init_ray(&ray, game, x);
 		perform_dda(&ray, game->map);
-		draw_wall_column(game, x, &ray);
+		draw_wall_column(game, x, &ray, &line);
 		x++;
 	}
 }
@@ -147,31 +156,38 @@ void	perform_dda(t_ray *ray, t_map *map)
 	}
 }
 
+void	init_wall_line(t_image *tex, t_wall_line *line, t_ray *ray)
+{
+	line->height = (int)(WIN_HEIGHT / ray->distance_to_wall);
+	line->draw_start = (WIN_HEIGHT / 2) - (line->height / 2);
+	if (line->draw_start < 0)
+		line->draw_start = 0;
+	line->draw_end = (WIN_HEIGHT / 2) + (line->height / 2);
+	if (line->draw_end >= WIN_HEIGHT)
+		line->draw_end = WIN_HEIGHT - 1;
+	line->tex_step = (double)tex->size.y / line->height;
+	line->tex_pos = 0;
+}
+
 // calculate the wall height based on the distance to the wall, keeping it within the range of WIN_HEIGHT
 // when the distance to the wall is short, the wall should appears taller; when the distance is longer, it should appears shorter.
-void	draw_wall_column(t_game *game, int x, t_ray *ray)
+void	draw_wall_column(t_game *game, int x, t_ray *ray, t_wall_line *line)
 {
 	int	colour;
+	int	tex_x;
 	int	y;
-	int	line_height;
-	int	start;
-	int	end;
+	int	tex_y;
+	t_image	*tex;
 
-	line_height = (int)(WIN_HEIGHT / ray->distance_to_wall);
-	start = (WIN_HEIGHT / 2) - (line_height / 2);
-	if (start < 0)
-		start = 0;
-	end = (WIN_HEIGHT / 2) + (line_height / 2);
-	if (end >= WIN_HEIGHT)
-		end = WIN_HEIGHT - 1;
-	// put colour
-	if (ray->hit_side == WALL_VERTICAL)
-		colour = RED;
-	else
-		colour = DARK_RED;
-	y = start;
-	while (y <= end)
+	tex = select_wall_texture(game, ray);
+	tex_x = calculate_tex_x(tex, ray, &game->player);
+	init_wall_line(tex, line, ray);
+	y = line->draw_start;
+	while (y <= line->draw_end)
 	{
+		tex_y = (int)line->tex_pos % tex->size.y;
+		line->tex_pos += line->tex_step;
+		colour = get_pixel(tex, tex_x, tex_y);
 		set_pixel(&game->frame, x, y, colour);
 		y++;
 	}

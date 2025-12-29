@@ -77,4 +77,5 @@ void	init_game(t_game *game)
 
 	init_player(&game->player);
 	init_input(&game->input);
+	load_textures(game);
 }
