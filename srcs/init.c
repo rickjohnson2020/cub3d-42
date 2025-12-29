@@ -72,8 +72,8 @@ void	init_game(t_game *game)
 	game->map = malloc(sizeof(*game->map));
 	game->map->map = dup_map();
 
-	game->frame.size.x = WIN_WIDTH;
-	game->frame.size.y = WIN_HEIGHT;
+	game->frame.width = WIN_WIDTH;
+	game->frame.height = WIN_HEIGHT;
 
 	init_player(&game->player);
 	init_input(&game->input);

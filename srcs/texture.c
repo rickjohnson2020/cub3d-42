@@ -3,7 +3,7 @@
 
 void	load_texture(t_game *game, t_image *tex, char *path)
 {
-	tex->img = mlx_xpm_file_to_image(game->mlx, path, &tex->size.x, &tex->size.y);
+	tex->img = mlx_xpm_file_to_image(game->mlx, path, &tex->width, &tex->height);
 	if (!tex->img)
 	{
 		printf("mlx_xpm_file_to_image error: %s\n", path);
@@ -59,10 +59,10 @@ int	calculate_tex_x(t_image *tex, t_ray *ray, t_player *p)
 	hit_offset = calculate_wall_hit_offset(ray, p);
 	// flip left to right depending on which side of the wall player is viewing from (the direction of the ray)
 	if ((ray->hit_side == WALL_VERTICAL && ray->dir.x < 0) || (ray->hit_side == WALL_HORIZONTAL && ray->dir.y >= 0))
-		tex_x = (1 - hit_offset) * tex->size.x;
+		tex_x = (1 - hit_offset) * tex->width;
 	else
-		tex_x = hit_offset * tex->size.x;
-	if (tex_x >= tex->size.x)
-		tex_x = tex->size.x - 1;
+		tex_x = hit_offset * tex->width;
+	if (tex_x >= tex->width)
+		tex_x = tex->width - 1;
 	return (tex_x);
 }

@@ -74,7 +74,8 @@ typedef struct	s_image
 	int		bits_per_pixel;
 	int		line_len;
 	int		endian;
-	t_vec2i	size;
+	int		height;
+	int		width;
 }	t_image;
 
 typedef struct	s_player
@@ -136,6 +137,7 @@ typedef struct	s_input
 	int	a;
 	int	right;
 	int	left;
+	int	esc;
 }	t_input;
 
 typedef struct	s_game
