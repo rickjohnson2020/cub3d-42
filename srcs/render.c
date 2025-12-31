@@ -158,15 +158,21 @@ void	perform_dda(t_ray *ray, t_map *map)
 
 void	init_wall_line(t_image *frame, t_image *tex, t_wall_line *line, t_ray *ray)
 {
-	line->height = (int)(frame->height / ray->distance_to_wall);
-	line->draw_start = (frame->height / 2) - (line->height / 2);
+	int	wall_height;
+	int	wall_start;
+	int	wall_end;
+
+	wall_height = (int)(frame->height / ray->distance_to_wall);
+	wall_start = (frame->height / 2) - (wall_height / 2);
+	wall_end = (frame->height / 2) + (wall_height / 2);
+	line->draw_start = wall_start;
+	line->draw_end = wall_end;
 	if (line->draw_start < 0)
 		line->draw_start = 0;
-	line->draw_end = (frame->height / 2) + (line->height / 2);
 	if (line->draw_end >= frame->height)
 		line->draw_end = frame->height - 1;
-	line->tex_step = (double)tex->height / line->height;
-	line->tex_pos = 0;
+	line->tex_step = (double)tex->height / wall_height;
+	line->tex_pos = (line->draw_start - wall_start) * line->tex_step;
 }
 
 // calculate the wall height based on the distance to the wall, keeping it within the range of WIN_HEIGHT

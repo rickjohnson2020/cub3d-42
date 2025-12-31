@@ -137,7 +137,6 @@ typedef struct	s_input
 	int	a;
 	int	right;
 	int	left;
-	int	esc;
 }	t_input;
 
 typedef struct	s_game
@@ -152,10 +151,8 @@ typedef struct	s_game
 
 typedef struct	s_wall_line
 {
-	int		height;
 	int		draw_start;
 	int		draw_end;
-	double	tex_x;
 	double	tex_step;
 	double	tex_pos;
 }	t_wall_line;
