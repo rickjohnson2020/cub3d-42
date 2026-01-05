@@ -43,8 +43,19 @@ struct s_map
 	char	*ceiling; // taking RGB as xxx.xxx.xxx
 	char	*floor_hex; //"#373737" taking RGB as hex
 	char	*ceiling_hex; //"#373737" taking RGB as hex
+	t_colour	*floor;
+	t_colour	*ceiling;
 	t_image	*img;
 };
+
+typedef struct s_colour	t_colour;
+struct s_colour
+{
+	int	r;
+	int	g;
+	int	b;	
+};
+
 
 typedef struct s_game	t_game;
 struct s_game
