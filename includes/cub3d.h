@@ -8,6 +8,9 @@
 # include <string.h>
 # include <math.h>
 # include <stdio.h>
+# include <errno.h>
+# include <stdbool.h>
+# include <fcntl.h>
 
 # define WIN_WIDTH 1024
 # define WIN_HEIGHT 768
@@ -83,8 +86,6 @@ typedef struct	s_player
 	t_vec2d	pos;
 	t_vec2d	dir;
 	t_vec2d	plane;
-	double	move_speed;
-	double	rot_speed;
 }	t_player;
 
 typedef struct	s_textures
@@ -137,6 +138,7 @@ typedef struct	s_input
 	int	a;
 	int	right;
 	int	left;
+	int	esc;
 }	t_input;
 
 typedef struct	s_game
@@ -158,12 +160,50 @@ typedef struct	s_wall_line
 }	t_wall_line;
 
 void	render_frame(t_game *game);
-void	init_game(t_game *game);
+//void	init_game(t_game *game);
 int		handle_key_press(int keycode, t_game *game);
 int		handle_key_release(int keycode, t_game *game);
 int		game_loop(t_game *game);
 void	load_textures(t_game *game);
 t_image	*select_wall_texture(t_game *game, t_ray *ray);
 int		calculate_tex_x(t_image *tex, t_ray *ray, t_player *p);
+void	set_map_size(t_map *map);
+void	init_player(t_game *game);
+int		close_window(t_game *game);
+void	set_map_size(t_map *map);
+bool	init_mlx(t_game *game);
+void	init_input(t_input *i);
 
+char	*get_next_line(int fd);
+
+// validate argument
+bool	is_valid_filename(char *filename);
+bool	is_valid_argv(int argc, char **argv);
+
+// validate files
+int		validate_file(char *filename);
+
+// initialize
+t_game	*init_game(t_game *game, char *filename);
+bool	init_map(t_game *game, char *filename);
+char	**read_config(char *filename);
+bool	is_space(char c);
+void	skip_empty_line(char ***file);
+t_map	*parse(char **file);
+//bool	parse_colour(t_map *map, char ***file);
+bool	parse_wall_textures(t_map *map, char ***file);
+bool	parse_map(t_map *map, char ***file);
+char	**store_file(char **file, char *new);
+bool	check_store_file(char **file, char *new);
+char	*ft_strndup(char *str, int start, int size);
+
+// error
+void	put_error(char *msg);
+void	put_file_error(char *msg, char *filename);
+
+// clean up resources
+void	free_map(t_map **map);
+void	free_image(t_image *img);
+void	free_game(t_game *game);
+void	free_dstr(char **str);
 #endif

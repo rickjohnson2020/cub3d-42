@@ -15,10 +15,14 @@ NAME = cub3D
 SRC_DIR = srcs
 BUILD_DIR = build
 
-SRC_FILES = main.c init.c render.c player.c event.c texture.c
+SRC_FILES = main.c render.c player.c event.c texture.c \
+			init_game.c init_map.c init_player.c parse_map.c \
+			parse_wall.c \
+			put_error.c validate_argv.c file_utils.c \
+			free_game.c free_map.c get_next_line.c
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -O3 -march=native -g
+CFLAGS = -Wall -Wextra -Werror -g -O3 -march=native -fsanitize=address
 
 SRCS = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJS = $(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR)/%.o, $(SRCS))

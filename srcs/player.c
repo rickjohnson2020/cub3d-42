@@ -1,12 +1,14 @@
 #include "../includes/cub3d.h"
 
-void	update_player_pos(t_game *game, t_player *p, int key);
-void	update_player_rot(t_player *p, int key);
-int		game_loop(t_game *game);
-void	check_wall_and_update(t_game *game, t_player *p, double x, double y);
+static void	update_player_pos(t_game *game, t_player *p, int key);
+static void	update_player_rot(t_player *p, int key);
+int			game_loop(t_game *game);
+static void	check_wall_and_update(t_game *game, t_player *p, double x, double y);
 
 int	game_loop(t_game *game)
 {
+	if (game->input.esc == 1)
+		close_window(game);
 	if (game->input.w == 1)
 		update_player_pos(game, &game->player, KEY_W);
 	if (game->input.s == 1)
@@ -24,7 +26,7 @@ int	game_loop(t_game *game)
 	return (0);
 }
 
-void	update_player_pos(t_game *game, t_player *p, int key)
+static void	update_player_pos(t_game *game, t_player *p, int key)
 {
 	t_vec2d	next_pos;
 
@@ -52,7 +54,7 @@ void	update_player_pos(t_game *game, t_player *p, int key)
 		check_wall_and_update(game, p, next_pos.x, next_pos.y);
 }
 
-void	check_wall_and_update(t_game *game, t_player *p, double x, double y)
+static void	check_wall_and_update(t_game *game, t_player *p, double x, double y)
 {
 	if (game->map->map[(int)p->pos.y][(int)x] != '1')
 		game->player.pos.x = x;
@@ -60,7 +62,7 @@ void	check_wall_and_update(t_game *game, t_player *p, double x, double y)
 		game->player.pos.y = y;
 }
 
-void	update_player_rot(t_player *p, int key)
+static void	update_player_rot(t_player *p, int key)
 {
 	t_vec2d	new_dir;
 	t_vec2d	new_plane;

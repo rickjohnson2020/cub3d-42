@@ -2,6 +2,11 @@
 
 int	handle_key_press(int keycode, t_game *game)
 {
+	if (keycode == KEY_ESC)
+	{
+		game->input.esc = 1;
+		return (0);
+	}
 	if (keycode == KEY_W)
 		game->input.w = 1;
 	if (keycode == KEY_S)

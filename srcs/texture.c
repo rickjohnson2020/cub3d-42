@@ -1,12 +1,12 @@
 #include "../includes/cub3d.h"
-#include <stdio.h>
 
+// TODO: error handling
 void	load_texture(t_game *game, t_image *tex, char *path)
 {
 	tex->img = mlx_xpm_file_to_image(game->mlx, path, &tex->width, &tex->height);
 	if (!tex->img)
 	{
-		printf("mlx_xpm_file_to_image error: %s\n", path);
+		printf("mlx_xpm_file_to_image() error: %s\n", path);
 		return ;
 	}
 	tex->addr = mlx_get_data_addr(tex->img, &tex->bits_per_pixel, &tex->line_len, &tex->endian);
@@ -14,10 +14,10 @@ void	load_texture(t_game *game, t_image *tex, char *path)
 
 void	load_textures(t_game *game)
 {
-	load_texture(game, &game->map->textures.west, "textures/christmas_W.xpm");
-	load_texture(game, &game->map->textures.east, "textures/christmas_E.xpm");
-	load_texture(game, &game->map->textures.south, "textures/christmas_S.xpm");
-	load_texture(game, &game->map->textures.north, "textures/christmas_N.xpm");
+	load_texture(game, &game->map->textures.west, game->map->file_west);
+	load_texture(game, &game->map->textures.east, game->map->file_east);
+	load_texture(game, &game->map->textures.south, game->map->file_south);
+	load_texture(game, &game->map->textures.north, game->map->file_north);
 }
 
 t_image	*select_wall_texture(t_game *game, t_ray *ray)
