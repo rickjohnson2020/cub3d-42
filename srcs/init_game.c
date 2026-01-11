@@ -17,7 +17,7 @@ t_game	*init_game(t_game *game, char *filename)
 	game = ft_calloc(sizeof(t_game), 1);
 	if (!game)
 	{
-		free_game (game);
+		free_game(game);
 		return (NULL);
 	}
 	if (!init_mlx(game))
@@ -27,7 +27,8 @@ t_game	*init_game(t_game *game, char *filename)
 	}
 	if (!init_map(game, filename))
 	{
-		free_game (game); return (NULL);
+		free_game(game);
+		return (NULL);
 	}
 	set_map_size(game->map);
 	init_input(&game->input);
@@ -46,7 +47,8 @@ bool	init_mlx(t_game *game)
 	}
 	game->frame.width = WIN_WIDTH;
 	game->frame.height = WIN_HEIGHT;
-	game->win = mlx_new_window(game->mlx, game->frame.width, game->frame.height, "cub3D");
+	game->win = mlx_new_window(game->mlx,
+			game->frame.width, game->frame.height, "cub3D");
 	if (!game->win)
 	{
 		//mlx_destroy_display(game->mlx);
@@ -54,8 +56,11 @@ bool	init_mlx(t_game *game)
 		put_error("mlx_new_window() error\n");
 		return (false);
 	}
-	game->frame.img = mlx_new_image(game->mlx, game->frame.width, game->frame.height);
-	game->frame.addr = mlx_get_data_addr(game->frame.img, &game->frame.bits_per_pixel, &game->frame.line_len, &game->frame.endian);
+	game->frame.img = mlx_new_image(game->mlx,
+			game->frame.width, game->frame.height);
+	game->frame.addr = mlx_get_data_addr(game->frame.img,
+			&game->frame.bits_per_pixel, &game->frame.line_len,
+			&game->frame.endian);
 	return (true);
 }
 
@@ -73,7 +78,7 @@ void	init_input(t_input *i)
 void	set_map_size(t_map *map)
 {
 	int	width;
-	int y;
+	int	y;
 	int	len;
 
 	width = 0;

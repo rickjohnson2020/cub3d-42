@@ -23,7 +23,8 @@ void	free_game(t_game *game)
 	}
 	if (game->mlx)
 	{
-		(void)game->mlx;
+		//(void)game->mlx;
+		free(game->mlx);
 	}
 	if (game->win)
 	{
@@ -41,7 +42,7 @@ int	close_window(t_game *game)
 	mlx_destroy_image(game->mlx, game->map->textures.north.img);
 	mlx_destroy_window(game->mlx, game->win);
 	//mlx_loop_end(game->mlx);
-	//mlx_destroy_display(game->mlx);
+	mlx_destroy_display(game->mlx);
 	free_game(game);
 	exit(EXIT_SUCCESS);
 }

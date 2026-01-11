@@ -22,7 +22,8 @@ SRC_FILES = main.c render.c player.c event.c texture.c \
 			free_game.c free_map.c get_next_line.c
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g -O3 -march=native -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g -O3
+#-march=native -fsanitize=address
 
 SRCS = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJS = $(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR)/%.o, $(SRCS))
@@ -30,11 +31,11 @@ OBJS = $(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR)/%.o, $(SRCS))
 LIBFT_DIR = ./libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
-#MLX_DIR = ./minilibx-linux
-MLX_DIR = ./minilibx-opengl
+MLX_DIR = ./minilibx-linux
+#MLX_DIR = ./minilibx-opengl
 MLX = $(MLX_DIR)/libmlx.a
-#MLX_FLAGS = -lmlx -lXext -lX11 -lm -lz
-MLX_FLAGS = -lmlx -framework OpenGL -framework AppKit
+MLX_FLAGS = -lmlx -lXext -lX11 -lm -lz
+#MLX_FLAGS = -lmlx -framework OpenGL -framework AppKit
 
 INCLUDES = -I includes -I $(LIBFT_DIR) -I $(MLX_DIR)
 
