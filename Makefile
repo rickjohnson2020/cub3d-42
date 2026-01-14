@@ -13,7 +13,7 @@
 NAME = cub3d
 
 # Compiler and flags
-CC = gcc
+CC = cc
 CFLAGS = -Wall -Wextra -Werror -g
 AR = AR
 ARFLAGS = rcs
@@ -22,7 +22,7 @@ DEBUGFLAGS = -DDEBUG=1
 # Path and library
 DIR = $(shell pwd)
 OS = $(shell uname)
-LIB_DIR = $(DIR)/libs/
+LIB_DIR = $(DIR)/lib/
 LIBFT_DIR = $(LIB_DIR)/libft/
 LIBFT = $(LIBFT_DIR)libft.a
 UNAME := $(shell uname)

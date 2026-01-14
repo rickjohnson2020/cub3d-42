@@ -1,9 +1,9 @@
 #ifndef CUB3D_H
 # define CUB3D_H
 
-//# include "../minilibx-opengl/mlx.h"
-# include "../libs/minilibx-linux/mlx.h"
-# include "../libs/libft/libft.h"
+//# include "../lib/minilibx-opengl/mlx.h"
+# include "../lib/minilibx-linux/mlx.h"
+# include "../lib/libft/libft.h"
 # include <stdlib.h>
 # include <unistd.h>
 # include <string.h>
