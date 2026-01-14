@@ -1,35 +1,54 @@
 # **************************************************************************** #
 #                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: riyano <riyano@student.42london.com>       +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/11/30 18:51:08 by riyano            #+#    #+#              #
-#    Updated: 2025/11/30 18:51:15 by riyano           ###   ########.fr        #
+#                                                          :::      ::::::::   #
+#   Makefile                                             :+:      :+:    :+:   #
+#                                                      +:+ +:+         +:+     #
+#   By: takaito <takaito@student.42london.com>       +#+  +:+       +#+        #
+#                                                  +#+#+#+#+#+   +#+           #
+#   Created: 2025/11/30 13:32:36 by takaito             #+#    #+#             #
+#   Updated: 2025/11/30 13:32:36 by takaito            ###   ########.fr       #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = cub3D
+NAME = cub3d
 
-SRC_DIR = srcs
-BUILD_DIR = build
+# Compiler and flags
+CC = gcc
+CFLAGS = -Wall -Wextra -Werror -g
+AR = AR
+ARFLAGS = rcs
+DEBUGFLAGS = -DDEBUG=1 
 
-SRC_FILES = main.c
-
-CC = cc
-CFLAGS = -Wall -Wextra -Werror -O3 -march=native -g
-
-SRCS = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
-OBJS = $(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR)/%.o, $(SRCS))
-
-LIBFT_DIR = ./libft
-LIBFT = $(LIBFT_DIR)/libft.a
-
-MLX_DIR = ./minilibx-linux
+# Path and library
+DIR = $(shell pwd)
+OS = $(shell uname)
+LIB_DIR = $(DIR)/libs/
+LIBFT_DIR = $(LIB_DIR)/libft/
+LIBFT = $(LIBFT_DIR)libft.a
+UNAME := $(shell uname)
+ifeq ($(UNAME),Darwin)
+	MLX_FLAGS = -lmlx -framework OpenGL -framework AppKit
+	MLX_DIR = $(LIB_DIR)/minilibx-opengl
+endif
+ifeq ($(UNAME),Linux)
+	MLX_DIR = $(LIB_DIR)/minilibx-linux
+	MLX_FLAGS = -lmlx -lXext -lX11 -lm -lz
+endif
 MLX = $(MLX_DIR)/libmlx.a
-MLX_FLAGS = -lmlx -lXext -lX11 -lm -lz
-#MLX_FLAGS = -lmlx -framework OpenGL -framework AppKit
+LIBFLAGS = -L$(LIBFT_DIR) -lft
+OBJ_DIR = $(DIR)/objs/
+SRC_DIR = $(DIR)/srcs/
+HEADER_DIR = $(DIR)/includes/
+HEADER = $(HEADER_DIR)cub3d.h
+SRCS = \
+	main.c render.c player.c event.c texture.c \
+	init_game.c init_map.c init_player.c parse_colour.c \
+	parse_map.c parse_wall.c \
+	put_error.c validate_argv.c file_utils.c \
+	free_game.c free_map.c
+
+OBJS = $(SRCS:%.c=$(OBJ_DIR)%.o)
+
 
 INCLUDES = -I includes -I $(LIBFT_DIR) -I $(MLX_DIR)
 
@@ -46,12 +65,12 @@ $(LIBFT):
 $(MLX):
 	@$(MAKE) -C $(MLX_DIR)
 
-$(BUILD_DIR)/%.o: $(SRC_DIR)/%.c includes/cub3d.h
+$(OBJ_DIR)%.o: $(SRC_DIR)%.c $(HEADER)
 	@mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+	@$(CC) $(CFLAGS) -I$(HEADER_DIR) -c $< -o $@
 
 clean:
-	$(RM) -r $(BUILD_DIR)
+	@rm -rf $(OBJ_DIR)
 	@$(MAKE) -C $(LIBFT_DIR) clean
 	@$(MAKE) -C $(MLX_DIR) clean
 
