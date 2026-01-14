@@ -30,12 +30,13 @@ bool	parse_colour(t_map *map, char ***file)
 	if (ft_strncmp("C ", **file, 2) == 0)
 		ceiling = ft_strndup(**file, 2, ft_strlen(**file) - 2);
 	(*file)++;
-	printf("floor:%s ceiling:%s\n", floor, ceiling);
 	if (floor != NULL && floor[0] != '\0')
 		map->floor_colour = extract_colour(floor);
 	if (ceiling != NULL && ceiling[0] != '\0')
 		map->ceiling_colour = extract_colour(ceiling);
 	are_all_set = are_colours_set(map, floor, ceiling);
+	free (floor);
+	free (ceiling);
 	return (are_all_set);
 }
 
@@ -66,6 +67,8 @@ static t_colour	extract_colour(char *str)
 
 static bool	are_colours_set(t_map *map, char *floor, char *ceiling)
 {
+	if (!map || !floor || !ceiling)
+		return (false);
 	if ((map->floor_colour.r == 0 && map->floor_colour.g
 			&& map->floor_colour.b == 0)
 		&& (ft_strncmp(floor, "0,0,0", ft_strlen(floor)) != 0))
