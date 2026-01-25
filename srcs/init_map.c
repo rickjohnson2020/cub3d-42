@@ -23,6 +23,8 @@ bool	init_map(t_game *game, char *filename)
 	free_dstr(config);
 	if (!game->map)
 		return (false);
+	if (!validate_map(game->map))
+		return (false);
 	return (true);
 }
 

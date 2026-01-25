@@ -194,6 +194,9 @@ bool	is_valid_argv(int argc, char **argv);
 // validate files
 int		validate_file(char *filename);
 
+// validate map
+bool	validate_map(t_map *map);
+
 // initialize
 t_game	*init_game(t_game *game, char *filename);
 bool	init_map(t_game *game, char *filename);
