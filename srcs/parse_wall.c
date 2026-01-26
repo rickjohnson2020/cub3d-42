@@ -39,6 +39,32 @@ bool	parse_wall_textures(t_map *map, char ***file)
 	return (are_all_set);
 }
 
+bool	validate_texture_path(t_map *map)
+{
+	int	fd;
+
+	fd = -1;
+	if (!map)
+		return (false);
+	fd = validate_file(map->file_north);
+	if (fd < 0)
+		return (false);
+	close (fd);
+	fd = validate_file(map->file_east);
+	if (fd < 0)
+		return (false);
+	close (fd);
+	fd = validate_file(map->file_west);
+	if (fd < 0)
+		return (false);
+	close (fd);
+	fd = validate_file(map->file_south);
+	if (fd < 0)
+		return (false);
+	close (fd);
+	return (true);
+}
+
 static bool	are_textures_set(t_map *map)
 {
 	if (map->file_north == NULL || map->file_north[0] == '\0')

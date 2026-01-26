@@ -196,6 +196,10 @@ int		validate_file(char *filename);
 
 // validate map
 bool	validate_map(t_map *map);
+char	**create_vmap(char **map, int num_lines, int max_len);
+bool	validate_texture_path(t_map *map);
+int		get_longest_str_len(char **dstr);
+int		count_lines(char **dstr);
 
 // initialize
 t_game	*init_game(t_game *game, char *filename);

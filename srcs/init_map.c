@@ -25,36 +25,9 @@ bool	init_map(t_game *game, char *filename)
 		return (false);
 	if (!validate_map(game->map))
 		return (false);
+	if (!validate_texture_path(game->map))
+		return (false);
 	return (true);
-}
-
-char	**read_config(char *filename)
-{
-	int		fd;
-	char	*line;
-	char	**file;
-
-	fd = validate_file(filename);
-	if (fd < 0)
-		return (false);
-	line = get_next_line(fd);
-	file = ft_calloc(sizeof(char *), 2);
-	if (!line || !file)
-		return (false);
-	while (line)
-	{
-		if (*line == '\n')
-			;
-		else if (!*file)
-			*file = ft_strndup(line, 0, ft_strlen(line) - 1);
-		else
-			file = store_file(file, line);
-		free (line);
-		if (!check_store_file(file, *file))
-			return (NULL);
-		line = get_next_line(fd);
-	}
-	return (file);
 }
 
 t_map	*parse(char **file)
