@@ -15,8 +15,8 @@
 #include "../includes/cub3d.h"
 
 static bool	is_starting_position(char c);
-static bool		is_surrounded(char **vmap, int y, int x);
-static bool		validate_cell(char **vmap);
+static bool	is_surrounded(char **vmap, int y, int x);
+static bool	validate_cell(char **vmap);
 
 bool	validate_map(t_map *map)
 {
