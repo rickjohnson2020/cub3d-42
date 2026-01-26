@@ -10,8 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-// map は empty line を含まない
-
 #include "../includes/cub3d.h"
 
 static char	*pad_spaces(char *str, int max_len);

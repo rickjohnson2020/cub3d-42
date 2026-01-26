@@ -10,8 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-// map は empty line を含まない
-
 #include "../includes/cub3d.h"
 
 static bool	is_starting_position(char c);
