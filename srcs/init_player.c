@@ -27,6 +27,8 @@ void	init_player(t_game *game)
 		x = 0;
 		while (x < game->map->width)
 		{
+			if (!game->map->map[y][x])
+				break ;
 			c = game->map->map[y][x];
 			if (c == 'N' || c == 'S' || c == 'W' || c == 'E')
 			{
