@@ -20,12 +20,12 @@ t_game	*init_game(t_game *game, char *filename)
 		free_game(game);
 		return (NULL);
 	}
-	if (!init_mlx(game))
+	if (!init_map(game, filename))
 	{
 		free_game(game);
 		return (NULL);
 	}
-	if (!init_map(game, filename))
+	if (!init_mlx(game))
 	{
 		free_game(game);
 		return (NULL);

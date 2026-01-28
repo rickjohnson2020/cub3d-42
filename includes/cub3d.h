@@ -1,8 +1,51 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cub3d.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: riyano <riyano@student.42london.com>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/01/19 21:54:01 by riyano            #+#    #+#             */
+/*   Updated: 2026/01/19 21:54:01 by takaito          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef CUB3D_H
 # define CUB3D_H
 
-//# include "../lib/minilibx-opengl/mlx.h"
-# include "../lib/minilibx-linux/mlx.h"
+# ifdef __APPLE__
+#  include "../lib/minilibx-opengl/mlx.h"
+#  define MOUSE_DOWN 4
+#  define MOUSE_UP 5
+#  define WINDOW_CLOSE 17
+#  define KEY_ESC 53
+#  define KEY_LEFT 123
+#  define KEY_UP 126
+#  define KEY_RIGHT 124
+#  define KEY_DOWN 125
+#  define KEY_A 0
+#  define KEY_D 2
+#  define KEY_W 13
+#  define KEY_S 1
+#  define KEY_PRESS 02
+#  define KEY_RELEASE 03
+# elif defined(__linux__)
+#  include "../lib/minilibx-linux/mlx.h"
+#  define MOUSE_DOWN 4
+#  define MOUSE_UP 5
+#  define WINDOW_CLOSE 17
+#  define KEY_ESC 65307
+#  define KEY_LEFT 65361
+#  define KEY_UP 65362
+#  define KEY_RIGHT 65363
+#  define KEY_DOWN 65364
+#  define KEY_A 97
+#  define KEY_D 100
+#  define KEY_W 119
+#  define KEY_S 115
+#  define KEY_PRESS 02
+#  define KEY_RELEASE 03
+# endif
 # include "../lib/libft/libft.h"
 # include <stdlib.h>
 # include <unistd.h>
@@ -21,38 +64,6 @@
 
 # define RED 0x00FF0000
 # define DARK_RED 0x00800000
-
-// for linux
-# define MOUSE_DOWN 4
-# define MOUSE_UP 5
-# define WINDOW_CLOSE 17
-# define KEY_ESC 65307
-# define KEY_LEFT 65361
-# define KEY_UP 65362
-# define KEY_RIGHT 65363
-# define KEY_DOWN 65364
-# define KEY_A 97
-# define KEY_D 100
-# define KEY_W 119
-# define KEY_S 115
-# define KEY_PRESS 02
-# define KEY_RELEASE 03
-
-// for mac
-//# define MOUSE_DOWN 4
-//# define MOUSE_UP 5
-//# define WINDOW_CLOSE 17
-//# define KEY_ESC 53
-//# define KEY_LEFT 123
-//# define KEY_UP 126
-//# define KEY_RIGHT 124
-//# define KEY_DOWN 125
-//# define KEY_A 0
-//# define KEY_D 2
-//# define KEY_W 13
-//# define KEY_S 1
-//# define KEY_PRESS 02
-//# define KEY_RELEASE 03
 
 typedef struct	s_vec2d
 {
@@ -112,7 +123,6 @@ typedef struct	s_map
 	int			width;
 	int			height;
 }	t_map;
-
 
 typedef enum	e_wall_side
 {
@@ -183,6 +193,13 @@ bool	is_valid_argv(int argc, char **argv);
 
 // validate files
 int		validate_file(char *filename);
+
+// validate map
+bool	validate_map(t_map *map);
+char	**create_vmap(char **map, int num_lines, int max_len);
+bool	validate_texture_path(t_map *map);
+int		get_longest_str_len(char **dstr);
+int		count_lines(char **dstr);
 
 // initialize
 t_game	*init_game(t_game *game, char *filename);

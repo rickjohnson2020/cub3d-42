@@ -62,10 +62,8 @@ void	draw_background(t_game *game)
 	{
 		if (y < game->frame.height / 2)
 			colour = colour_to_int(game->map->ceiling_colour);
-			//colour = 0x87CEEB;
 		else
 			colour = colour_to_int(game->map->floor_colour);
-			//colour = 0x444444;
 		x = 0;
 		while (x < game->frame.width)
 		{

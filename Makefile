@@ -17,7 +17,7 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror -g
 AR = AR
 ARFLAGS = rcs
-DEBUGFLAGS = -DDEBUG=1 
+DEBUGFLAGS = -DDEBUG=1
 
 # Path and library
 DIR = $(shell pwd)
@@ -42,10 +42,12 @@ HEADER_DIR = $(DIR)/includes/
 HEADER = $(HEADER_DIR)cub3d.h
 SRCS = \
 	main.c render.c player.c event.c texture.c \
-	init_game.c init_map.c init_player.c parse_colour.c \
+	init_game.c init_map.c init_map_utils.c \
+	init_player.c parse_colour.c \
 	parse_map.c parse_wall.c \
 	put_error.c validate_argv.c file_utils.c \
-	free_game.c free_map.c
+	free_game.c free_map.c \
+	validate_map.c validate_map_utils.c
 
 OBJS = $(SRCS:%.c=$(OBJ_DIR)%.o)
 
