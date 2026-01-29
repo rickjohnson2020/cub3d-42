@@ -14,7 +14,7 @@
 
 static void	update_player_pos(t_game *game, t_player *p, int key);
 static void	update_player_rot(t_player *p, int key);
-static void	check_wall_and_update(t_game *game, t_player *p, t_vec2d pos);
+static void	check_wall_and_update(t_game *game, t_vec2d pos, int key);
 
 int	game_loop(t_game *game)
 {
@@ -62,14 +62,33 @@ static void	update_player_pos(t_game *game, t_player *p, int key)
 		next_pos.y = p->pos.y + p->plane.y * -MOVE_SPEED;
 	}
 	if (key == KEY_W || key == KEY_S || key == KEY_D || key == KEY_A)
-		check_wall_and_update(game, p, next_pos);
+		check_wall_and_update(game, next_pos, key);
 }
 
-static void	check_wall_and_update(t_game *game, t_player *p, t_vec2d pos)
+static void	check_wall_and_update(t_game *game, t_vec2d pos, int key)
 {
-	if (game->map->map[(int)p->pos.y][(int)pos.x] != '1')
+	int	check_x;
+	int	check_y;
+
+	if (key == KEY_W)
+		check_x = pos.x + game->player.dir.x * PLAYER_RADIUS;
+	else if (key == KEY_S)
+		check_x = pos.x + game->player.dir.x * -PLAYER_RADIUS;
+	else if (key == KEY_D)
+		check_x = pos.x + game->player.plane.x * PLAYER_RADIUS;
+	else
+		check_x = pos.x + game->player.plane.x * -PLAYER_RADIUS;
+	if (game->map->map[(int)game->player.pos.y][check_x] != '1')
 		game->player.pos.x = pos.x;
-	if (game->map->map[(int)pos.y][(int)p->pos.x] != '1')
+	if (key == KEY_W)
+		check_y = pos.y + game->player.dir.y * PLAYER_RADIUS;
+	else if (key == KEY_S)
+		check_y = pos.y + game->player.dir.y * -PLAYER_RADIUS;
+	else if (key == KEY_D)
+		check_y = pos.y + game->player.plane.y * PLAYER_RADIUS;
+	else
+		check_y = pos.y + game->player.plane.y * -PLAYER_RADIUS;
+	if (game->map->map[check_y][(int)game->player.pos.x] != '1')
 		game->player.pos.y = pos.y;
 }
 
