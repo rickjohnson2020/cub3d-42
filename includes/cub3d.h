@@ -62,7 +62,7 @@
 # define MOVE_SPEED 0.05
 # define ROT_SPEED 0.01
 
-# define PLAYER_RADIUS 0.3
+# define PLAYER_RADIUS 0.2
 
 typedef struct	s_vec2d
 {
