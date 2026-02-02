@@ -12,73 +12,91 @@
 
 #include "../includes/cub3d.h"
 
-static void	update_player_pos(t_game *game, t_player *p, int key);
-static void	update_player_rot(t_player *p, int key);
-static void	check_wall_and_update(t_game *game, t_player *p, t_vec2d pos);
+static void	update_player_pos(t_game *game, t_player *p);
+static void	update_player_rot(t_game *game, t_player *p);
+static void	check_wall_and_update(t_game *game, t_vec2d pos, t_vec2d dir);
+static int	is_inside_map(t_map *map, int x, int y);
 
 int	game_loop(t_game *game)
 {
-	if (game->input.esc == 1)
+	if (game->input.esc)
 		close_window(game);
-	if (game->input.w == 1)
-		update_player_pos(game, &game->player, KEY_W);
-	if (game->input.s == 1)
-		update_player_pos(game, &game->player, KEY_S);
-	if (game->input.d == 1)
-		update_player_pos(game, &game->player, KEY_D);
-	if (game->input.a == 1)
-		update_player_pos(game, &game->player, KEY_A);
-	if (game->input.right == 1)
-		update_player_rot(&game->player, KEY_RIGHT);
-	if (game->input.left == 1)
-		update_player_rot(&game->player, KEY_LEFT);
+	update_player_pos(game, &game->player);
+	update_player_rot(game, &game->player);
 	render_frame(game);
 	mlx_put_image_to_window(game->mlx, game->win, game->frame.img, 0, 0);
 	return (0);
 }
 
-static void	update_player_pos(t_game *game, t_player *p, int key)
+static void	update_player_pos(t_game *game, t_player *p)
 {
+	t_vec2d	move_dir;
 	t_vec2d	next_pos;
 
-	if (key == KEY_W)
+	move_dir.x = 0;
+	move_dir.y = 0;
+	if (game->input.w)
 	{
-		next_pos.x = p->pos.x + p->dir.x * MOVE_SPEED;
-		next_pos.y = p->pos.y + p->dir.y * MOVE_SPEED;
+		move_dir.x += p->dir.x;
+		move_dir.y += p->dir.y;
 	}
-	else if (key == KEY_S)
+	if (game->input.s)
 	{
-		next_pos.x = p->pos.x + p->dir.x * -MOVE_SPEED;
-		next_pos.y = p->pos.y + p->dir.y * -MOVE_SPEED;
+		move_dir.x -= p->dir.x;
+		move_dir.y -= p->dir.y;
 	}
-	else if (key == KEY_D)
+	if (game->input.d)
 	{
-		next_pos.x = p->pos.x + p->plane.x * MOVE_SPEED;
-		next_pos.y = p->pos.y + p->plane.y * MOVE_SPEED;
+		move_dir.x += p->plane.x;
+		move_dir.y += p->plane.y;
 	}
-	else if (key == KEY_A)
+	if (game->input.a)
 	{
-		next_pos.x = p->pos.x + p->plane.x * -MOVE_SPEED;
-		next_pos.y = p->pos.y + p->plane.y * -MOVE_SPEED;
+		move_dir.x -= p->plane.x;
+		move_dir.y -= p->plane.y;
 	}
-	if (key == KEY_W || key == KEY_S || key == KEY_D || key == KEY_A)
-		check_wall_and_update(game, p, next_pos);
+	if (fabs(move_dir.x) < 1e-9 && fabs(move_dir.y) < 1e-9)
+		return ;
+	next_pos.x = p->pos.x + move_dir.x * MOVE_SPEED;
+	next_pos.y = p->pos.y + move_dir.y * MOVE_SPEED;
+	check_wall_and_update(game, next_pos, move_dir);
 }
 
-static void	check_wall_and_update(t_game *game, t_player *p, t_vec2d pos)
+static void	check_wall_and_update(t_game *game, t_vec2d pos, t_vec2d dir)
 {
-	if (game->map->map[(int)p->pos.y][(int)pos.x] != '1')
+	int	check_x;
+	int	check_y;
+
+	check_x = (int)(pos.x + dir.x * PLAYER_RADIUS);
+	check_y = (int)(pos.y + dir.y * PLAYER_RADIUS);
+	if (is_inside_map(game->map, check_x, (int)game->player.pos.y)
+			&& game->map->map[(int)game->player.pos.y][check_x] != '1')
 		game->player.pos.x = pos.x;
-	if (game->map->map[(int)pos.y][(int)p->pos.x] != '1')
+	if (is_inside_map(game->map, (int)game->player.pos.x, check_y)
+			&& game->map->map[check_y][(int)game->player.pos.x] != '1')
 		game->player.pos.y = pos.y;
 }
 
-static void	update_player_rot(t_player *p, int key)
+static int	is_inside_map(t_map *map, int x, int y)
+{
+	int	row_len;
+
+	if (y < 0 || y >= map->height)
+		return (0);
+	if (x < 0)
+		return (0);
+	row_len  = ft_strlen(map->map[y]);
+	if (x >= row_len)
+		return (0);
+	return (1);
+}
+
+static void	update_player_rot(t_game *game, t_player *p)
 {
 	double	tmp_dir_x;
 	double	tmp_plane_x;
 
-	if (key == KEY_RIGHT)
+	if (game->input.right)
 	{
 		tmp_dir_x = p->dir.x * cos(ROT_SPEED) - p->dir.y * sin(ROT_SPEED);
 		p->dir.y = p->dir.x * sin(ROT_SPEED) + p->dir.y * cos(ROT_SPEED);
@@ -87,7 +105,7 @@ static void	update_player_rot(t_player *p, int key)
 		p->plane.y = p->plane.x * sin(ROT_SPEED) + p->plane.y * cos(ROT_SPEED);
 		p->plane.x = tmp_plane_x;
 	}
-	else if (key == KEY_LEFT)
+	else if (game->input.left)
 	{
 		tmp_dir_x = p->dir.x * cos(-ROT_SPEED) - p->dir.y * sin(-ROT_SPEED);
 		p->dir.y = p->dir.x * sin(-ROT_SPEED) + p->dir.y * cos(-ROT_SPEED);
