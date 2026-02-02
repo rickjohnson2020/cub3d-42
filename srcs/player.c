@@ -6,7 +6,7 @@
 /*   By: riyano <riyano@student.42london.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/11 18:54:48 by riyano            #+#    #+#             */
-/*   Updated: 2026/01/11 19:04:42 by riyano           ###   ########.fr       */
+/*   Updated: 2026/02/02 17:52:15 by riyano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,10 +70,10 @@ static void	check_wall_and_update(t_game *game, t_vec2d pos, t_vec2d dir)
 	check_x = (int)(pos.x + dir.x * PLAYER_RADIUS);
 	check_y = (int)(pos.y + dir.y * PLAYER_RADIUS);
 	if (is_inside_map(game->map, check_x, (int)game->player.pos.y)
-			&& game->map->map[(int)game->player.pos.y][check_x] != '1')
+		&& game->map->map[(int)game->player.pos.y][check_x] != '1')
 		game->player.pos.x = pos.x;
 	if (is_inside_map(game->map, (int)game->player.pos.x, check_y)
-			&& game->map->map[check_y][(int)game->player.pos.x] != '1')
+		&& game->map->map[check_y][(int)game->player.pos.x] != '1')
 		game->player.pos.y = pos.y;
 }
 
@@ -85,7 +85,7 @@ static int	is_inside_map(t_map *map, int x, int y)
 		return (0);
 	if (x < 0)
 		return (0);
-	row_len  = ft_strlen(map->map[y]);
+	row_len = ft_strlen(map->map[y]);
 	if (x >= row_len)
 		return (0);
 	return (1);
