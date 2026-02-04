@@ -44,7 +44,7 @@ static void	destroy_mlx(t_game *g)
 	}
 	if (g->mlx)
 	{
-		// mlx_destroy_display(g->mlx);
+		mlx_destroy_display(g->mlx);
 		free(g->mlx);
 		g->mlx = NULL;
 	}
