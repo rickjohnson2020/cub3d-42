@@ -58,11 +58,11 @@
 
 # define WIN_WIDTH 1024
 # define WIN_HEIGHT 768
-
-# define MOVE_SPEED 0.05
-# define ROT_SPEED 0.01
-
+# define MOVE_STEP 0.05
+# define ROT_STEP 0.01 // radian
 # define PLAYER_RADIUS 0.2
+# define FOV_DEGREES 67
+# define EPS 1e-9
 
 typedef struct s_vec2d
 {

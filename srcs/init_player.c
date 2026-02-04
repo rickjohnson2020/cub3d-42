@@ -70,24 +70,27 @@ static void	set_player_dir(t_player *p, char dir)
 
 static void	set_player_plane(t_player *p, char dir)
 {
+	double	fov_rad;
+
+	fov_rad = FOV_DEGREES * (M_PI / 180);
 	if (dir == 'N')
 	{
-		p->plane.x = 0.66;
+		p->plane.x = tan(fov_rad / 2);
 		p->plane.y = 0;
 	}
 	else if (dir == 'S')
 	{
-		p->plane.x = -0.66;
+		p->plane.x = -tan(fov_rad / 2);
 		p->plane.y = 0;
 	}
 	else if (dir == 'E')
 	{
 		p->plane.x = 0;
-		p->plane.y = 0.66;
+		p->plane.y = tan(fov_rad / 2);
 	}
 	else if (dir == 'W')
 	{
 		p->plane.x = 0;
-		p->plane.y = -0.66;
+		p->plane.y = -tan(fov_rad / 2);
 	}
 }
