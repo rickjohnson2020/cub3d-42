@@ -12,29 +12,29 @@
 
 #include "../includes/cub3d.h"
 
-static void	update_player_pos(t_game *game, t_player *p);
-static void	update_player_rot(t_game *game, t_player *p);
-static void	check_wall_and_update(t_game *game, t_vec2d pos, t_vec2d dir);
-static int	is_inside_map(t_map *map, int x, int y);
+static void		check_wall_and_update(t_game *game, t_vec2d pos, t_vec2d dir);
+static int		is_inside_map(t_map *map, int x, int y);
+static t_vec2d	calculate_move_dir(t_game *game, t_player *p);
 
-int	game_loop(t_game *game)
-{
-	if (game->input.esc)
-		close_window(game);
-	update_player_pos(game, &game->player);
-	update_player_rot(game, &game->player);
-	render_frame(game);
-	mlx_put_image_to_window(game->mlx, game->win, game->frame.img, 0, 0);
-	return (0);
-}
-
-static void	update_player_pos(t_game *game, t_player *p)
+void	update_player_pos(t_game *game, t_player *p)
 {
 	t_vec2d	move_dir;
 	t_vec2d	next_pos;
 
-	move_dir.x = 0;
-	move_dir.y = 0;
+	move_dir = calculate_move_dir(game, p);
+	if (fabs(move_dir.x) < 1e-9 && fabs(move_dir.y) < 1e-9)
+		return ;
+	next_pos.x = p->pos.x + move_dir.x * MOVE_SPEED;
+	next_pos.y = p->pos.y + move_dir.y * MOVE_SPEED;
+	check_wall_and_update(game, next_pos, move_dir);
+}
+
+static t_vec2d	calculate_move_dir(t_game *game, t_player *p)
+{
+	t_vec2d	move_dir;
+
+	move_dir.x = 0.0;
+	move_dir.y = 0.0;
 	if (game->input.w)
 	{
 		move_dir.x += p->dir.x;
@@ -55,11 +55,7 @@ static void	update_player_pos(t_game *game, t_player *p)
 		move_dir.x -= p->plane.x;
 		move_dir.y -= p->plane.y;
 	}
-	if (fabs(move_dir.x) < 1e-9 && fabs(move_dir.y) < 1e-9)
-		return ;
-	next_pos.x = p->pos.x + move_dir.x * MOVE_SPEED;
-	next_pos.y = p->pos.y + move_dir.y * MOVE_SPEED;
-	check_wall_and_update(game, next_pos, move_dir);
+	return (move_dir);
 }
 
 static void	check_wall_and_update(t_game *game, t_vec2d pos, t_vec2d dir)
@@ -91,7 +87,7 @@ static int	is_inside_map(t_map *map, int x, int y)
 	return (1);
 }
 
-static void	update_player_rot(t_game *game, t_player *p)
+void	update_player_rot(t_game *game, t_player *p)
 {
 	double	tmp_dir_x;
 	double	tmp_plane_x;

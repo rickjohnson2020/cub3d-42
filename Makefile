@@ -49,7 +49,8 @@ SRCS = \
 	parse_map.c parse_wall.c \
 	put_error.c validate_argv.c file_utils.c \
 	free_game.c free_map.c cleanup.c\
-	validate_map.c validate_map_utils.c
+	validate_map.c validate_map_utils.c \
+	game_loop.c
 
 OBJS = $(SRCS:%.c=$(OBJ_DIR)%.o)
 

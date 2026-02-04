@@ -174,6 +174,10 @@ typedef struct s_wall_line
 // player movements
 int				handle_key_press(int keycode, t_game *game);
 int				handle_key_release(int keycode, t_game *game);
+void			update_player_pos(t_game *game, t_player *p);
+void			update_player_rot(t_game *game, t_player *p);
+
+// game loop
 int				game_loop(t_game *game);
 
 // rendering

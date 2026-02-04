@@ -50,3 +50,10 @@ int	handle_key_release(int keycode, t_game *game)
 		game->input.left = 0;
 	return (0);
 }
+
+int	close_window(t_game *game)
+{
+	destroy_game(&game);
+	exit(EXIT_SUCCESS);
+	return (0);
+}
