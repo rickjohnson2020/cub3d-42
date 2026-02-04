@@ -6,7 +6,7 @@
 /*   By: riyano <riyano@student.42london.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 21:54:01 by riyano            #+#    #+#             */
-/*   Updated: 2026/01/19 21:54:01 by takaito          ###   ########.fr       */
+/*   Updated: 2026/02/04 14:36:29 by riyano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -222,7 +222,8 @@ void			init_player(t_game *game);
 bool			load_textures(t_game *game);
 void			init_ray_1(t_ray *ray, t_game *game, int x);
 void			init_ray_2(t_ray *ray, t_game *game);
-void			init_wall(t_image *frame, t_image *tex, t_wall_line *wall, t_ray *ray);
+void			init_wall(t_image *frame, t_image *tex,
+					t_wall_line *wall, t_ray *ray);
 
 // error
 void			put_error(char *msg);
