@@ -22,11 +22,11 @@ void	init_ray_1(t_ray *ray, t_game *game, int x)
 	if (ray->dir.x == 0)
 		ray->step_cost.x = INFINITY;
 	else
-		ray->step_cost.x = fabs(1 / ray->dir.x);
+		ray->step_cost.x = 1 / fabs(ray->dir.x);
 	if (ray->dir.y == 0)
 		ray->step_cost.y = INFINITY;
 	else
-		ray->step_cost.y = fabs(1 / ray->dir.y);
+		ray->step_cost.y = 1 / fabs(ray->dir.y);
 	ray->hit = 0;
 }
 

@@ -15,14 +15,10 @@
 
 # ifdef __APPLE__
 #  include "../lib/minilibx-opengl/mlx.h"
-#  define MOUSE_DOWN 4
-#  define MOUSE_UP 5
 #  define WINDOW_CLOSE 17
 #  define KEY_ESC 53
 #  define KEY_LEFT 123
-#  define KEY_UP 126
 #  define KEY_RIGHT 124
-#  define KEY_DOWN 125
 #  define KEY_A 0
 #  define KEY_D 2
 #  define KEY_W 13
@@ -31,14 +27,10 @@
 #  define KEY_RELEASE 03
 # elif defined(__linux__)
 #  include "../lib/minilibx-linux/mlx.h"
-#  define MOUSE_DOWN 4
-#  define MOUSE_UP 5
 #  define WINDOW_CLOSE 17
 #  define KEY_ESC 65307
 #  define KEY_LEFT 65361
-#  define KEY_UP 65362
 #  define KEY_RIGHT 65363
-#  define KEY_DOWN 65364
 #  define KEY_A 97
 #  define KEY_D 100
 #  define KEY_W 119
