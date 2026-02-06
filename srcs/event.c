@@ -6,7 +6,7 @@
 /*   By: riyano <riyano@student.42london.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/11 18:20:18 by riyano            #+#    #+#             */
-/*   Updated: 2026/01/11 18:20:20 by riyano           ###   ########.fr       */
+/*   Updated: 2026/02/04 14:28:09 by riyano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,5 +48,12 @@ int	handle_key_release(int keycode, t_game *game)
 		game->input.right = 0;
 	if (keycode == KEY_LEFT)
 		game->input.left = 0;
+	return (0);
+}
+
+int	close_window(t_game *game)
+{
+	destroy_game(&game);
+	exit(EXIT_SUCCESS);
 	return (0);
 }

@@ -51,13 +51,11 @@ int	main(int argc, char **argv)
 	}
 	print_config(game);
 	mlx_put_image_to_window(game->mlx, game->win, game->frame.img, 0, 0);
-	mlx_key_hook(game->win, handle_key_press, game);
-	mlx_key_hook(game->win, handle_key_release, game);
 	mlx_hook(game->win, WINDOW_CLOSE, 1L << 2, close_window, game);
 	mlx_hook(game->win, KEY_PRESS, 1L << 0, handle_key_press, game);
 	mlx_hook(game->win, KEY_RELEASE, 1L << 1, handle_key_release, game);
 	mlx_loop_hook(game->mlx, game_loop, game);
 	mlx_loop(game->mlx);
-	free_game(game);
+	destroy_game(&game);
 	exit(EXIT_SUCCESS);
 }

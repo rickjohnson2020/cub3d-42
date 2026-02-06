@@ -21,19 +21,14 @@ t_game	*init_game(t_game *game, char *filename)
 		return (NULL);
 	}
 	if (!init_map(game, filename))
-	{
-		free_game(game);
-		return (NULL);
-	}
-	if (!init_mlx(game))
-	{
-		free_game(game);
-		return (NULL);
-	}
+		return (destroy_game(&game), NULL);
 	set_map_size(game->map);
 	init_input(&game->input);
 	init_player(game);
-	load_textures(game);
+	if (!init_mlx(game))
+		return (destroy_game(&game), NULL);
+	if (!load_textures(game))
+		return (destroy_game(&game), NULL);
 	return (game);
 }
 
@@ -41,26 +36,22 @@ bool	init_mlx(t_game *game)
 {
 	game->mlx = mlx_init();
 	if (!game->mlx)
-	{
-		put_error("mlx_init() error\n");
-		return (false);
-	}
+		return (put_error("mlx_init() error\n"), false);
 	game->frame.width = WIN_WIDTH;
 	game->frame.height = WIN_HEIGHT;
 	game->win = mlx_new_window(game->mlx,
 			game->frame.width, game->frame.height, "cub3D");
 	if (!game->win)
-	{
-		//mlx_destroy_display(game->mlx);
-		free(game->mlx);
-		put_error("mlx_new_window() error\n");
-		return (false);
-	}
+		return (put_error("mlx_new_window() error\n"), false);
 	game->frame.img = mlx_new_image(game->mlx,
 			game->frame.width, game->frame.height);
+	if (!game->frame.img)
+		return (put_error("mlx_new_image() error\n"), false);
 	game->frame.addr = mlx_get_data_addr(game->frame.img,
 			&game->frame.bits_per_pixel, &game->frame.line_len,
 			&game->frame.endian);
+	if (!game->frame.addr)
+		return (put_error("mlx_get_data_addr() error\n"), false);
 	return (true);
 }
 
