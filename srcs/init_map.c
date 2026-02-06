@@ -12,6 +12,8 @@
 
 #include "../includes/cub3d.h"
 
+static void	init_map_flags(t_map *map);
+
 bool	init_map(t_game *game, char *filename)
 {
 	char	**config;
@@ -27,6 +29,11 @@ bool	init_map(t_game *game, char *filename)
 		return (false);
 	if (!validate_texture_path(game->map))
 		return (false);
+	if (!is_valid_colour(game->map))
+	{
+		put_error("Invalid colour range\n");
+		return (false);
+	}
 	return (true);
 }
 
@@ -40,6 +47,7 @@ t_map	*parse(char **file)
 		put_error("malloc() failed in parse() function\n");
 		return (NULL);
 	}
+	init_map_flags(map);
 	if (map && !parse_wall_textures(map, &file))
 	{
 		put_error("failed to parse wall texture file path\n");
@@ -83,4 +91,22 @@ bool	is_space(char c)
 	if (c == 9 || c == 11 || c == 32)
 		return (true);
 	return (false);
+}
+
+static void	init_map_flags(t_map *map)
+{
+	map->is_north_set = false;
+	map->is_south_set = false;
+	map->is_east_set = false;
+	map->is_west_set = false;
+	map->is_ceiling_set = false;
+	map->is_floor_set = false;
+	map->are_all_set = false;
+}
+
+void	are_all_elements_set(t_map *map)
+{
+	if (map->is_north_set && map->is_south_set && map->is_east_set
+		&& map->is_west_set && map->is_ceiling_set && map->is_floor_set)
+		map->are_all_set = true;
 }

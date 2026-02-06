@@ -17,11 +17,13 @@ static t_colour	extract_colour(char *str);
 
 bool	parse_colour(t_map *map, char ***file)
 {
-	bool	are_all_set;
+	bool	are_all_colours_set;
 	char	*floor;
 	char	*ceiling;
 
-	are_all_set = false;
+	floor = NULL;
+	ceiling = NULL;
+	are_all_colours_set = are_colours_set(map, floor, ceiling);
 	skip_empty_line(file);
 	if (ft_strncmp("F ", **file, 2) == 0)
 		floor = ft_strndup(**file, 2, ft_strlen(**file) - 2);
@@ -34,10 +36,10 @@ bool	parse_colour(t_map *map, char ***file)
 		map->floor_colour = extract_colour(floor);
 	if (ceiling != NULL && ceiling[0] != '\0')
 		map->ceiling_colour = extract_colour(ceiling);
-	are_all_set = are_colours_set(map, floor, ceiling);
+	are_all_colours_set = are_colours_set(map, floor, ceiling);
 	free (floor);
 	free (ceiling);
-	return (are_all_set);
+	return (are_all_colours_set);
 }
 
 static t_colour	extract_colour(char *str)
@@ -51,6 +53,7 @@ static t_colour	extract_colour(char *str)
 	i = 0;
 	if (!str)
 		return (colour);
+	i = count_spaces(str);
 	while (str[i] != '\0')
 	{
 		while (ft_isalnum(str[i]))
@@ -67,23 +70,50 @@ static t_colour	extract_colour(char *str)
 
 static bool	are_colours_set(t_map *map, char *floor, char *ceiling)
 {
-	if (!map || !floor || !ceiling)
+	if (!map)
 		return (false);
-	if ((map->floor_colour.r == 0 && map->floor_colour.g
-			&& map->floor_colour.b == 0)
-		&& (ft_strncmp(floor, "0,0,0", ft_strlen(floor)) != 0))
+	if (map->is_floor_set && map->is_ceiling_set)
+		return (true);
+	if (!floor || !ceiling)
+		return (false);
+	if ((map->floor_colour.r != 0 || map->floor_colour.g != 0
+			|| map->floor_colour.b != 0)
+		|| (ft_strncmp(floor + count_spaces(floor), "0,0,0",
+				ft_strlen(floor + count_spaces(floor))) != 0))
+		map->is_floor_set = true;
+	if ((map->ceiling_colour.r != 0 || map->ceiling_colour.g != 0
+			|| map->ceiling_colour.b != 0)
+		&& (ft_strncmp(ceiling + (count_spaces(ceiling)), "0,0,0",
+				ft_strlen(ceiling + count_spaces(ceiling))) != 0))
+		map->is_ceiling_set = true;
+	if (map->is_floor_set && map->is_ceiling_set)
+		return (true);
+	return (false);
+}
+
+bool	is_valid_colour(t_map *map)
+{
+	if (!map)
 		return (false);
 	if (map->floor_colour.r > 255 || map->floor_colour.g > 255
 		|| map->floor_colour.b > 255 || map->floor_colour.r < 0
 		|| map->floor_colour.g < 0 || map->floor_colour.b < 0)
-		return (false);
-	if ((map->ceiling_colour.r == 0 && map->ceiling_colour.g
-			&& map->ceiling_colour.b == 0)
-		&& (ft_strncmp(ceiling, "0,0,0", ft_strlen(ceiling)) != 0))
 		return (false);
 	if (map->ceiling_colour.r > 255 || map->ceiling_colour.g > 255
 		|| map->ceiling_colour.b > 255 || map->ceiling_colour.r < 0
 		|| map->ceiling_colour.g < 0 || map->ceiling_colour.b < 0)
 		return (false);
 	return (true);
+}
+
+int	count_spaces(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (!str)
+		return (i);
+	while (str[i] == ' ')
+		i++;
+	return (i);
 }
