@@ -54,3 +54,41 @@ static char	**read_config_helper(char *line, char **file, int fd)
 	close (fd);
 	return (file);
 }
+
+// This function moves pointer until string contains valid values. 
+void	skip_empty_line(char ***file)
+{
+	char	*line;
+
+	if (!file || !*file)
+		return ;
+	while (**file)
+	{
+		line = **file;
+		while (*line && is_space(*line))
+			line++;
+		if (*line == '\0')
+			(*file)++;
+		else
+			break ;
+	}
+}
+
+bool	is_space(char c)
+{
+	if (c == 9 || c == 11 || c == 32)
+		return (true);
+	return (false);
+}
+
+int	count_spaces(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (!str)
+		return (i);
+	while (str[i] == ' ')
+		i++;
+	return (i);
+}

@@ -12,7 +12,8 @@
 
 #include "../includes/cub3d.h"
 
-static void	init_map_flags(t_map *map);
+static bool		parse_helper(t_map *map, char **file);
+static void		are_all_elements_set(t_map *map);
 
 bool	init_map(t_game *game, char *filename)
 {
@@ -28,7 +29,10 @@ bool	init_map(t_game *game, char *filename)
 	if (!validate_map(game->map))
 		return (false);
 	if (!validate_texture_path(game->map))
+	{
+		put_error("Failed to open texture file\n");
 		return (false);
+	}
 	if (!is_valid_colour(game->map))
 	{
 		put_error("Invalid colour range\n");
@@ -47,18 +51,17 @@ t_map	*parse(char **file)
 		put_error("malloc() failed in parse() function\n");
 		return (NULL);
 	}
-	init_map_flags(map);
-	if (map && !parse_wall_textures(map, &file))
+	while (!map->are_all_set && *file != NULL)
 	{
-		put_error("failed to parse wall texture file path\n");
-		free_map (&map);
+		if (!parse_helper(map, file))
+			return (NULL);
+		file++;
 	}
-	if (map && !parse_colour(map, &file))
+	if (!map || !map->are_all_set)
 	{
-		put_error("failed to parse floor or ceiling colour\n");
-		free_map (&map);
+		put_error("Failed to parse wall or colour\n");
+		return (NULL);
 	}
-	skip_empty_line(&file);
 	if (map && !parse_map(map, &file))
 	{
 		put_error("failed to parse map\n");
@@ -67,44 +70,23 @@ t_map	*parse(char **file)
 	return (map);
 }
 
-// This function moves pointer until string contains valid values. 
-void	skip_empty_line(char ***file)
+static bool	parse_helper(t_map *map, char **file)
 {
-	char	*line;
-
-	if (!file || !*file)
-		return ;
-	while (**file)
+	if (!parse_wall_textures(map, &file))
 	{
-		line = **file;
-		while (*line && is_space(*line))
-			line++;
-		if (*line == '\0')
-			(*file)++;
-		else
-			break ;
+		free_map(&map);
+		return (false);
 	}
+	else if (!parse_colour(map, &file))
+	{
+		free_map(&map);
+		return (false);
+	}
+	are_all_elements_set(map);
+	return (true);
 }
 
-bool	is_space(char c)
-{
-	if (c == 9 || c == 11 || c == 32)
-		return (true);
-	return (false);
-}
-
-static void	init_map_flags(t_map *map)
-{
-	map->is_north_set = false;
-	map->is_south_set = false;
-	map->is_east_set = false;
-	map->is_west_set = false;
-	map->is_ceiling_set = false;
-	map->is_floor_set = false;
-	map->are_all_set = false;
-}
-
-void	are_all_elements_set(t_map *map)
+static void	are_all_elements_set(t_map *map)
 {
 	if (map->is_north_set && map->is_south_set && map->is_east_set
 		&& map->is_west_set && map->is_ceiling_set && map->is_floor_set)
