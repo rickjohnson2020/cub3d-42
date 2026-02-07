@@ -14,6 +14,7 @@
 
 static bool	is_valid_char(char c, bool *has_start_read);
 static bool	is_valid_map(char **map);
+static bool	is_valid_identifier_helper(char **file);
 
 bool	parse_map(t_map *map, char ***file)
 {
@@ -83,4 +84,42 @@ static bool	is_valid_char(char c, bool *has_start_read)
 		}
 	}
 	return (false);
+}
+
+bool	is_valid_identifier(char **file)
+{
+	if (!file || !(*file))
+		return (false);
+	if (ft_strncmp("NO ", *file, 3) == 0)
+		return (true);
+	else if (ft_strncmp("SO ", *file, 3) == 0)
+		return (true);
+	else if (ft_strncmp("WE ", *file, 3) == 0)
+		return (true);
+	else if (ft_strncmp("EA ", *file, 3) == 0)
+		return (true);
+	else if (ft_strncmp("F ", *file, 2) == 0)
+		return (true);
+	else if (ft_strncmp("C ", *file, 2) == 0)
+		return (true);
+	else
+		return (is_valid_identifier_helper(file));
+	return (true);
+}
+
+static bool	is_valid_identifier_helper(char **file)
+{
+	int		i;
+
+	i = 0;
+	while ((*file)[i] != '\0')
+	{
+		if ((*file)[i] != ' ' && (*file)[i] != '\n')
+		{
+			put_error("The map file contains an invalid identifier.\n");
+			return (false);
+		}
+		i++;
+	}
+	return (true);
 }

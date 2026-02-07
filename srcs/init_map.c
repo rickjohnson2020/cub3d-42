@@ -72,6 +72,11 @@ t_map	*parse(char **file)
 
 static bool	parse_helper(t_map *map, char **file)
 {
+	if (!is_valid_identifier(file))
+	{
+		free_map(&map);
+		return (false);
+	}
 	if (!parse_wall_textures(map, &file))
 	{
 		free_map(&map);
