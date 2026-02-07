@@ -1,4 +1,4 @@
-This project has been created as part of the 42 curriculum by riyano and takaito.
+*This project has been created as part of the 42 curriculum by riyano and takaito.*
 
 # cub3D
 
