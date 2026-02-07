@@ -12,68 +12,71 @@
 
 #include "../includes/cub3d.h"
 
-static bool	are_textures_set(t_map *map);
+static bool	parse_north(t_map *map, char ***file);
+static bool	parse_south(t_map *map, char ***file);
+static bool	parse_east(t_map *map, char ***file);
+static bool	parse_west(t_map *map, char ***file);
 
 bool	parse_wall_textures(t_map *map, char ***file)
 {
-	bool	are_all_set;
+	bool	res;
 
-	are_all_set = false;
-	skip_empty_line(file);
+	res = true;
 	if (ft_strncmp("NO ", **file, 3) == 0)
-		map->file_north = ft_strndup(**file, 3, ft_strlen(**file) - 3);
-	(*file)++;
-	skip_empty_line(file);
-	if (ft_strncmp("SO ", **file, 3) == 0)
-		map->file_south = ft_strndup(**file, 3, ft_strlen(**file) - 3);
-	(*file)++;
-	skip_empty_line(file);
-	if (ft_strncmp("WE ", **file, 3) == 0)
-		map->file_west = ft_strndup(**file, 3, ft_strlen(**file) - 3);
-	(*file)++;
-	skip_empty_line(file);
-	if (ft_strncmp("EA ", **file, 3) == 0)
-		map->file_east = ft_strndup(**file, 3, ft_strlen(**file) - 3);
-	(*file)++;
-	are_all_set = are_textures_set(map);
-	return (are_all_set);
+		res = parse_north(map, file);
+	else if (ft_strncmp("SO ", **file, 3) == 0)
+		res = parse_south(map, file);
+	else if (ft_strncmp("WE ", **file, 3) == 0)
+		res = parse_west(map, file);
+	else if (ft_strncmp("EA ", **file, 3) == 0)
+		res = parse_east(map, file);
+	return (res);
 }
 
-bool	validate_texture_path(t_map *map)
+static bool	parse_north(t_map *map, char ***file)
 {
-	int	fd;
-
-	fd = -1;
-	if (!map)
+	if (map->is_north_set)
+	{
+		put_error("NO is set twice\n");
 		return (false);
-	fd = validate_file(map->file_north);
-	if (fd < 0)
-		return (false);
-	close (fd);
-	fd = validate_file(map->file_east);
-	if (fd < 0)
-		return (false);
-	close (fd);
-	fd = validate_file(map->file_west);
-	if (fd < 0)
-		return (false);
-	close (fd);
-	fd = validate_file(map->file_south);
-	if (fd < 0)
-		return (false);
-	close (fd);
+	}
+	map->file_north = ft_strndup(**file, 3, ft_strlen(**file) - 3);
+	map->is_north_set = true;
 	return (true);
 }
 
-static bool	are_textures_set(t_map *map)
+static bool	parse_south(t_map *map, char ***file)
 {
-	if (map->file_north == NULL || map->file_north[0] == '\0')
+	if (map->is_south_set)
+	{
+		put_error("SO is set twice\n");
 		return (false);
-	if (map->file_south == NULL || map->file_south[0] == '\0')
+	}
+	map->file_south = ft_strndup(**file, 3, ft_strlen(**file) - 3);
+	map->is_south_set = true;
+	return (true);
+}
+
+static bool	parse_east(t_map *map, char ***file)
+{
+	if (map->is_east_set)
+	{
+		put_error("EA is set twice\n");
 		return (false);
-	if (map->file_west == NULL || map->file_west[0] == '\0')
+	}
+	map->file_east = ft_strndup(**file, 3, ft_strlen(**file) - 3);
+	map->is_east_set = true;
+	return (true);
+}
+
+static bool	parse_west(t_map *map, char ***file)
+{
+	if (map->is_west_set)
+	{
+		put_error("WE is set twice\n");
 		return (false);
-	if (map->file_east == NULL || map->file_east[0] == '\0')
-		return (false);
+	}
+	map->file_west = ft_strndup(**file, 3, ft_strlen(**file) - 3);
+	map->is_west_set = true;
 	return (true);
 }

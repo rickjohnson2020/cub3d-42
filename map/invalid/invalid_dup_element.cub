@@ -1,10 +1,18 @@
-NO      textures/christmas_N.xpm
-SO  textures/christmas_S.xpm
-
 WE textures/christmas_W.xpm
-EA    textures/christmas_E.xpm
+
 F   100,100,0
+SO  textures/christmas_S.xpm
+NO      textures/christmas_N.xpm
+
+EA    textures/christmas_E.xpm
+
+
+EA    textures/christmas_E.xpm
 C      255,255,255
+
+
+
+
 
 11111111111111111
 10000000000000001
@@ -13,3 +21,4 @@ C      255,255,255
 10000000000000001   
 11111111111111111
 11111111111111111
+

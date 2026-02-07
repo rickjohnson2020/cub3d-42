@@ -12,32 +12,68 @@
 
 #include "../includes/cub3d.h"
 
-static bool		are_colours_set(t_map *map, char *floor, char *ceiling);
 static t_colour	extract_colour(char *str);
+static bool		parse_ceiling(t_map *map, char ***file);
+static bool		parse_floor(t_map *map, char ***file);
 
 bool	parse_colour(t_map *map, char ***file)
 {
-	bool	are_all_set;
-	char	*floor;
-	char	*ceiling;
+	bool	res;
 
-	are_all_set = false;
-	skip_empty_line(file);
+	res = true;
 	if (ft_strncmp("F ", **file, 2) == 0)
+		res = parse_floor(map, file);
+	else if (ft_strncmp("C ", **file, 2) == 0)
+		res = parse_ceiling(map, file);
+	return (res);
+}
+
+static bool	parse_floor(t_map *map, char ***file)
+{
+	char	*floor;
+
+	floor = NULL;
+	if (ft_strncmp("F ", **file, 2) == 0)
+	{
+		if (map->is_floor_set)
+		{
+			put_error("Floor colour is set twice\n");
+			return (false);
+		}
 		floor = ft_strndup(**file, 2, ft_strlen(**file) - 2);
-	(*file)++;
-	skip_empty_line(file);
-	if (ft_strncmp("C ", **file, 2) == 0)
-		ceiling = ft_strndup(**file, 2, ft_strlen(**file) - 2);
+	}
 	(*file)++;
 	if (floor != NULL && floor[0] != '\0')
+	{
 		map->floor_colour = extract_colour(floor);
+		map->is_floor_set = true;
+		free (floor);
+	}
+	return (map->is_floor_set);
+}
+
+static bool	parse_ceiling(t_map *map, char ***file)
+{
+	char	*ceiling;
+
+	ceiling = NULL;
+	if (ft_strncmp("C ", **file, 2) == 0)
+	{
+		if (map->is_ceiling_set)
+		{
+			put_error("ceiling colour is set twice\n");
+			return (false);
+		}
+		ceiling = ft_strndup(**file, 2, ft_strlen(**file) - 2);
+	}
+	(*file)++;
 	if (ceiling != NULL && ceiling[0] != '\0')
+	{
 		map->ceiling_colour = extract_colour(ceiling);
-	are_all_set = are_colours_set(map, floor, ceiling);
-	free (floor);
-	free (ceiling);
-	return (are_all_set);
+		map->is_ceiling_set = true;
+		free (ceiling);
+	}
+	return (map->is_ceiling_set);
 }
 
 static t_colour	extract_colour(char *str)
@@ -51,6 +87,7 @@ static t_colour	extract_colour(char *str)
 	i = 0;
 	if (!str)
 		return (colour);
+	i = count_spaces(str);
 	while (str[i] != '\0')
 	{
 		while (ft_isalnum(str[i]))
@@ -65,21 +102,13 @@ static t_colour	extract_colour(char *str)
 	return (colour);
 }
 
-static bool	are_colours_set(t_map *map, char *floor, char *ceiling)
+bool	is_valid_colour(t_map *map)
 {
-	if (!map || !floor || !ceiling)
-		return (false);
-	if ((map->floor_colour.r == 0 && map->floor_colour.g
-			&& map->floor_colour.b == 0)
-		&& (ft_strncmp(floor, "0,0,0", ft_strlen(floor)) != 0))
+	if (!map)
 		return (false);
 	if (map->floor_colour.r > 255 || map->floor_colour.g > 255
 		|| map->floor_colour.b > 255 || map->floor_colour.r < 0
 		|| map->floor_colour.g < 0 || map->floor_colour.b < 0)
-		return (false);
-	if ((map->ceiling_colour.r == 0 && map->ceiling_colour.g
-			&& map->ceiling_colour.b == 0)
-		&& (ft_strncmp(ceiling, "0,0,0", ft_strlen(ceiling)) != 0))
 		return (false);
 	if (map->ceiling_colour.r > 255 || map->ceiling_colour.g > 255
 		|| map->ceiling_colour.b > 255 || map->ceiling_colour.r < 0

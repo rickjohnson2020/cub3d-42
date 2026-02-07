@@ -113,6 +113,13 @@ typedef struct s_map
 	t_textures	textures;
 	int			width;
 	int			height;
+	bool		is_north_set;
+	bool		is_south_set;
+	bool		is_east_set;
+	bool		is_west_set;
+	bool		is_ceiling_set;
+	bool		is_floor_set;
+	bool		are_all_set;
 }	t_map;
 
 typedef enum e_wall_side
@@ -193,6 +200,9 @@ char			**create_vmap(char **map, int num_lines, int max_len);
 bool			validate_texture_path(t_map *map);
 int				get_longest_str_len(char **dstr);
 int				count_lines(char **dstr);
+int				count_spaces(char *str);
+bool			is_valid_colour(t_map *map);
+bool			is_valid_identifier(char **file);
 
 // initialize
 t_game			*init_game(t_game *game, char *filename);

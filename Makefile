@@ -46,7 +46,7 @@ SRCS = \
 	init_ray.c init_wall.c \
 	init_game.c init_map.c init_map_utils.c \
 	init_player.c parse_colour.c \
-	parse_map.c parse_wall.c \
+	parse_map.c parse_wall.c parse_wall_utils.c \
 	put_error.c validate_argv.c file_utils.c \
 	free_game.c free_map.c cleanup.c\
 	validate_map.c validate_map_utils.c \
