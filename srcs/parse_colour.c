@@ -13,6 +13,8 @@
 #include "../includes/cub3d.h"
 
 static t_colour	extract_colour(char *str);
+static void		init_extract_colour(int *i, t_colour *colour,
+					t_colour *err_colour);
 static bool		parse_ceiling(t_map *map, char ***file);
 static bool		parse_floor(t_map *map, char ***file);
 
@@ -47,8 +49,9 @@ static bool	parse_floor(t_map *map, char ***file)
 	{
 		map->floor_colour = extract_colour(floor);
 		map->is_floor_set = true;
-		free (floor);
 	}
+	if (floor)
+		free (floor);
 	return (map->is_floor_set);
 }
 
@@ -71,8 +74,9 @@ static bool	parse_ceiling(t_map *map, char ***file)
 	{
 		map->ceiling_colour = extract_colour(ceiling);
 		map->is_ceiling_set = true;
-		free (ceiling);
 	}
+	if (ceiling)
+		free (ceiling);
 	return (map->is_ceiling_set);
 }
 
@@ -80,39 +84,34 @@ static t_colour	extract_colour(char *str)
 {
 	int			i;
 	t_colour	colour;
+	t_colour	err_colour;
 
-	colour.r = 0;
-	colour.g = 0;
-	colour.b = 0;
-	i = 0;
+	init_extract_colour(&i, &colour, &err_colour);
 	if (!str)
-		return (colour);
+		return (err_colour);
 	i = count_spaces(str);
+	while (ft_isdigit(str[i]))
+		colour.r = colour.r * 10 + (str[i++] - '0');
+	if (str[i++] != ',')
+		return (err_colour);
+	while (ft_isdigit(str[i]))
+		colour.g = colour.g * 10 + (str[i++] - '0');
+	if (str[i++] != ',')
+		return (err_colour);
+	while (ft_isdigit(str[i]))
+		colour.b = colour.b * 10 + (str[i++] - '0');
 	while (str[i] != '\0')
 	{
-		while (ft_isalnum(str[i]))
-			colour.r = colour.r * 10 + (str[i++] - '0');
+		if (str[i] != ' ' && str[i] != '\n')
+			return (err_colour);
 		i++;
-		while (ft_isalnum(str[i]))
-			colour.g = colour.g * 10 + (str[i++] - '0');
-		i++;
-		while (ft_isalnum(str[i]))
-			colour.b = colour.b * 10 + (str[i++] - '0');
 	}
 	return (colour);
 }
 
-bool	is_valid_colour(t_map *map)
+static void	init_extract_colour(int *i, t_colour *colour, t_colour *err_colour)
 {
-	if (!map)
-		return (false);
-	if (map->floor_colour.r > 255 || map->floor_colour.g > 255
-		|| map->floor_colour.b > 255 || map->floor_colour.r < 0
-		|| map->floor_colour.g < 0 || map->floor_colour.b < 0)
-		return (false);
-	if (map->ceiling_colour.r > 255 || map->ceiling_colour.g > 255
-		|| map->ceiling_colour.b > 255 || map->ceiling_colour.r < 0
-		|| map->ceiling_colour.g < 0 || map->ceiling_colour.b < 0)
-		return (false);
-	return (true);
+	*i = 0;
+	ft_memset(colour, 0, sizeof(t_colour));
+	ft_memset(err_colour, -1, sizeof(t_colour));
 }

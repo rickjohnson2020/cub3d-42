@@ -234,7 +234,6 @@ void			put_file_error(char *msg, char *filename);
 // clean up resources
 void			free_map(t_map **map);
 void			free_image(t_image *img);
-void			free_game(t_game *game);
 void			free_dstr(char **str);
 int				close_window(t_game *game);
 void			destroy_game(t_game **game_ptr);

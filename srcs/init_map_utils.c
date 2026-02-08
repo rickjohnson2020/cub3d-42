@@ -40,9 +40,7 @@ static char	**read_config_helper(char *line, char **file, int fd)
 {
 	while (line)
 	{
-		if (*line == '\n')
-			;
-		else if (!*file)
+		if (!*file)
 			*file = ft_strndup(line, 0, ft_strlen(line) - 1);
 		else
 			file = store_file(file, line);
