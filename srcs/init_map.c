@@ -35,7 +35,7 @@ bool	init_map(t_game *game, char *filename)
 	}
 	if (!is_valid_colour(game->map))
 	{
-		put_error("Invalid colour range\n");
+		put_error("Invalid colour format\n");
 		return (false);
 	}
 	return (true);
