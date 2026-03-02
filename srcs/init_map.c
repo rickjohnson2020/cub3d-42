@@ -21,7 +21,10 @@ bool	init_map(t_game *game, char *filename)
 
 	config = read_config(filename);
 	if (!config)
+	{
+		put_error("Map is empty or an error occured while reading file.\n");
 		return (false);
+	}
 	game->map = parse(config);
 	free_dstr(config);
 	if (!game->map)
@@ -60,7 +63,7 @@ t_map	*parse(char **file)
 	if (!map || !map->are_all_set)
 	{
 		put_error("Failed to parse wall or colour\n");
-		return (NULL);
+		return (free_map (&map), NULL);
 	}
 	if (map && !parse_map(map, &file))
 	{
