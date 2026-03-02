@@ -22,7 +22,8 @@ bool	init_map(t_game *game, char *filename)
 	config = read_config(filename);
 	if (!config)
 	{
-		put_error("Map is empty or an error occured while reading file.\n");
+		if (errno == 0)
+			put_error("Map is empty or an error occured while reading file.\n");
 		return (false);
 	}
 	game->map = parse(config);
@@ -32,15 +33,9 @@ bool	init_map(t_game *game, char *filename)
 	if (!validate_map(game->map))
 		return (false);
 	if (!validate_texture_path(game->map))
-	{
-		put_error("Failed to open texture file\n");
-		return (false);
-	}
+		return (put_error("Failed to open texture file\n"), false);
 	if (!is_valid_colour(game->map))
-	{
-		put_error("Invalid colour format\n");
-		return (false);
-	}
+		return (put_error("Invalid colour format\n"), false);
 	return (true);
 }
 
