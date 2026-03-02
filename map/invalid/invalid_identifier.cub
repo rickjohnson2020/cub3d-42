@@ -3,7 +3,7 @@ SO  textures/christmas_S.xpm
 F      255,255,255
 WE textures/christmas_W.xpm
 EA    textures/christmas_E.xpm
-F   100,100,0
+FA   100,100,0
 C      255,255,255
 
 
