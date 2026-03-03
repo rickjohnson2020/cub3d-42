@@ -38,15 +38,17 @@ static bool	parse_floor(t_map *map, char ***file)
 	if (ft_strncmp("F ", **file, 2) == 0)
 	{
 		if (map->is_floor_set)
-		{
-			put_error("Floor colour is set twice\n");
-			return (false);
-		}
+			return (put_error("Floor colour is set twice\n"), false);
 		floor = ft_strndup(**file, 2, ft_strlen(**file) - 2);
 	}
 	(*file)++;
 	if (floor != NULL && floor[0] != '\0')
 	{
+		if (!is_valid_colour_str(floor))
+		{
+			free (floor);
+			return (put_error("Invalid colour format\n"), false);
+		}
 		map->floor_colour = extract_colour(floor);
 		map->is_floor_set = true;
 	}
@@ -63,15 +65,17 @@ static bool	parse_ceiling(t_map *map, char ***file)
 	if (ft_strncmp("C ", **file, 2) == 0)
 	{
 		if (map->is_ceiling_set)
-		{
-			put_error("ceiling colour is set twice\n");
-			return (false);
-		}
+			return (put_error("ceiling colour is set twice\n"), false);
 		ceiling = ft_strndup(**file, 2, ft_strlen(**file) - 2);
 	}
 	(*file)++;
 	if (ceiling != NULL && ceiling[0] != '\0')
 	{
+		if (!is_valid_colour_str(ceiling))
+		{
+			free (ceiling);
+			return (put_error("Invalid colour format\n"), false);
+		}
 		map->ceiling_colour = extract_colour(ceiling);
 		map->is_ceiling_set = true;
 	}

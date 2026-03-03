@@ -202,6 +202,7 @@ int				get_longest_str_len(char **dstr);
 int				count_lines(char **dstr);
 int				count_spaces(char *str);
 bool			is_valid_colour(t_map *map);
+bool			is_valid_colour_str(char *str);
 bool			is_valid_identifier(char **file);
 
 // initialize

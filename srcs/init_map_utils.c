@@ -25,7 +25,10 @@ char	**read_config(char *filename)
 		return (NULL);
 	line = get_next_line(fd);
 	if (!line)
+	{
+		close (fd);
 		return (NULL);
+	}
 	file = ft_calloc(sizeof(char *), 2);
 	if (!file)
 	{
