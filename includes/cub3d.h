@@ -202,6 +202,7 @@ int				get_longest_str_len(char **dstr);
 int				count_lines(char **dstr);
 int				count_spaces(char *str);
 bool			is_valid_colour(t_map *map);
+bool			is_valid_colour_str(char *str);
 bool			is_valid_identifier(char **file);
 
 // initialize
@@ -234,7 +235,6 @@ void			put_file_error(char *msg, char *filename);
 // clean up resources
 void			free_map(t_map **map);
 void			free_image(t_image *img);
-void			free_game(t_game *game);
 void			free_dstr(char **str);
 int				close_window(t_game *game);
 void			destroy_game(t_game **game_ptr);

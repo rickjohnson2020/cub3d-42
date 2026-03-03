@@ -16,10 +16,7 @@ t_game	*init_game(t_game *game, char *filename)
 {
 	game = ft_calloc(sizeof(t_game), 1);
 	if (!game)
-	{
-		free_game(game);
 		return (NULL);
-	}
 	if (!init_map(game, filename))
 		return (destroy_game(&game), NULL);
 	set_map_size(game->map);

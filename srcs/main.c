@@ -45,10 +45,7 @@ int	main(int argc, char **argv)
 		exit(EXIT_FAILURE);
 	game = init_game(game, argv[1]);
 	if (!game)
-	{
 		exit(EXIT_FAILURE);
-		free_game(game);
-	}
 	print_config(game);
 	mlx_put_image_to_window(game->mlx, game->win, game->frame.img, 0, 0);
 	mlx_hook(game->win, WINDOW_CLOSE, 1L << 2, close_window, game);

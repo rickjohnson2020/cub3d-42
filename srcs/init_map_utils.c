@@ -25,7 +25,10 @@ char	**read_config(char *filename)
 		return (NULL);
 	line = get_next_line(fd);
 	if (!line)
+	{
+		close (fd);
 		return (NULL);
+	}
 	file = ft_calloc(sizeof(char *), 2);
 	if (!file)
 	{
@@ -40,9 +43,7 @@ static char	**read_config_helper(char *line, char **file, int fd)
 {
 	while (line)
 	{
-		if (*line == '\n')
-			;
-		else if (!*file)
+		if (!*file)
 			*file = ft_strndup(line, 0, ft_strlen(line) - 1);
 		else
 			file = store_file(file, line);
